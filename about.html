@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>About – Para Studio</title>
+
+  <!-- 字体 -->
+  <style>
+    @font-face{font-family:'BankGothicLight';src:url('fonts/bgothl.ttf') format('truetype');font-weight:300;}
+    @font-face{font-family:'BankGothicBold' ;src:url('fonts/bgothm.ttf') format('truetype');font-weight:700;}
+  </style>
+
+  <!-- 版式与颜色 -->
+  <style>
+    body{background:#000;color:#fff;font-family:'BankGothicLight',sans-serif;margin:0;padding:0;}
+
+    /* 顶部导航 */
+    header{display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid #444;}
+    .logo{font-size:16px;font-weight:bold;text-transform:uppercase;}
+    nav ul{display:flex;list-style:none;margin:0;padding:0;}
+    nav li{margin:0 10px;}
+    nav a{color:#fff;text-decoration:none;font-size:14px;text-transform:uppercase;}
+
+    /* 页面主标题 */
+    .page-title{font-family:'BankGothicBold',sans-serif;font-size:26px;text-transform:uppercase;margin:40px 50px 20px;}
+
+    /* Section 结构 */
+    .container{max-width:1400px;margin:0 auto;padding:0 20px 80px;}
+    .section{margin:90px 0;}
+    .section-title-main{font-family:'BankGothicBold',sans-serif;font-size:20px;margin:0 0 18px;letter-spacing:1px;}
+    .section-title-main a{color:#fff;text-decoration:none;}
+    .section-title-main a:hover{text-decoration:underline;}
+
+    /* 三栏并排 */
+    .section-body{display:flex;gap:40px;align-items:flex-start;}
+/* —— 图片框：改成 320 × 453（A4 竖向），取消蓝边 —— */
+.img-box{
+  width:320px;          /* 原宽度不变 */
+  height:453px;         /* 320 × √2 ≈ 453 */
+  background:#111;      /* 黑底占位，可替换成实图后保留 */
+  border:none;          /* 去掉蓝色描边 */
+  flex-shrink:0;
+}
+.img-box img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* —— 文字列 —— */
+.lang-fr-en{
+  flex:1;
+  max-width:480px;
+  font-size:14px;
+  line-height:1.6;
+  color:#aaa;           /* 保持 Bank Gothic */
+}
+
+.lang-cn{
+  flex:1;
+  max-width:480px;
+  font-size:14px;
+  line-height:1.6;
+  color:#aaa;
+  font-family:"PingFang SC","Microsoft YaHei","Heiti SC",sans-serif; /* 中文改黑体 */
+}
+
+    /* 切换按钮在段落下方 */
+    .tabs{margin-top:12px;}
+    .tab-btn{font-family:'BankGothicBold',sans-serif;font-size:12px;cursor:pointer;padding:2px 6px;border:1px solid #888;}
+    .tab-btn.active{background:#fff;color:#000;}
+
+    /* 语言块显隐 */
+    .lang-block{display:none;}
+    .lang-block.show{display:block;}
+
+/* 禁止所有文字选中 */
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* 禁止图片拖拽、右键保存、点击等 */
+img {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+  </style>
+
+  <!-- JS：切换 FR / EN -->
+  <script>
+    function switchLang(id,lang){
+      const box=document.getElementById(id).querySelector('.lang-fr-en');
+      box.querySelectorAll('.lang-block').forEach(b=>b.classList.remove('show'));
+      box.querySelector('.lang-'+lang).classList.add('show');
+      box.querySelectorAll('.tab-btn').forEach(btn=>btn.classList.toggle('active',btn.dataset.lang===lang));
+    }
+    document.addEventListener('DOMContentLoaded',()=>{
+      document.querySelectorAll('.section').forEach(sec=>{
+        switchLang(sec.id,'fr');           /* 默认显示法语 */
+      });
+    });
+  </script>
+
+<script>
+// 禁止右键菜单
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+// 禁止文字选中
+document.addEventListener('selectstart', e => e.preventDefault());
+
+// 禁止复制
+document.addEventListener('copy', e => e.preventDefault());
+
+// 禁止拖拽图片
+document.addEventListener('dragstart', e => e.preventDefault());
+
+// 禁止保存快捷键 Ctrl+S / Cmd+S
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+    e.preventDefault();
+
+// 禁止 F12（打开开发者工具）
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'F12') {
+    e.preventDefault();
+  }
+});
+</script>
+
+</head>
+
+<body>
+  <!-- 导航 -->
+  <header>
+    <div class="logo">Para Studio</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="project.html">Projects</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <h1 class="page-title">About Para Studio</h1>
+
+  <div class="container">
+
+    <!-- ===== 1) Company Philosophy ===== -->
+    <div class="section" id="company-philosophy">
+      <h2 class="section-title-main"><a href="#company-philosophy">
+        COMPANY PHILOSOPHY / PHILOSOPHIE / 公司理念</a></h2>
+
+      <div class="section-body">
+        <div class="img-box"><img src="images/philosophie.png" alt=""></div>
+
+        <!-- FR / EN 列 -->
+        <div class="lang-fr-en">
+          <div class="lang-block lang-fr">
+            Para Studio considère l’architecture non pas comme un simple volume, mais comme un interlocuteur actif du contexte urbain.  
+            Chaque projet commence par l’écoute : vents, lumière, mémoire collective. Nous affinons ensuite en parallèle l’ossature
+            urbaine et le détail constructif, pour que concept et constructibilité avancent d’un même pas.<br><br>
+            • <strong>Primat de l’expérience</strong> — on ressent l’espace avant de le décrire.<br>
+            • <strong>Souffle public</strong> — créer un lien accueillant entre sphère privée et tissu urbain.<br>
+            • <strong>Bas-carbone &amp; technologie</strong> — BIM, paramétrique, IA générative rendent la durabilité intrinsèque.<br>
+            • <strong>Récit interculturel</strong> — fluidité orientale + ordre occidental pour un langage pérenne.<br><br>
+            Nous visons moins une signature qu’une <em>atmosphère</em> qui éveille la curiosité et inscrit le projet comme virgule
+            dans l’histoire de la ville.
+          </div>
+
+          <div class="lang-block lang-en">
+            Para Studio sees architecture not as a static mass but as an active interlocutor within the city.  
+            Every commission begins with listening — to wind, light and collective memory.  
+            We then refine concept and constructability in parallel, from the urban grid down to the joint detail.<br><br>
+            • <strong>Experience first</strong> — space should be felt before explained.<br>
+            • <strong>Public spirit</strong> — create welcoming interfaces between private realm and city.<br>
+            • <strong>Low-carbon &amp; tech</strong> — BIM, parametrics, generative AI embed sustainability.<br>
+            • <strong>Cross-cultural narrative</strong> — Eastern fluidity meets Western order in a clear language.<br><br>
+            Our aim is less a fixed signature than an <em>atmosphere</em> that sparks curiosity and becomes a comma in the city’s story.
+          </div>
+
+          <!-- 切换键放在段落后 -->
+          <div class="tabs">
+            <span class="tab-btn active" data-lang="fr" onclick="switchLang('company-philosophy','fr')">FR</span>
+            <span class="tab-btn"        data-lang="en" onclick="switchLang('company-philosophy','en')">EN</span>
+          </div>
+        </div>
+
+        <!-- 中文列 -->
+        <div class="lang-cn">
+          Para Studio 的信念 - 我们相信，建筑不该只是耸立的形体，而应成为城市语境中的积极对话者——在尺度之间游走，连接人的情感与场所精神。
+          每一项任务，我们先倾听：场地的风向 / 光影，社区的记忆 / 期望。随后在城市网格与构件细节两端同步推敲，让概念与可建性并进。<br><br>
+          • <strong>体验为先</strong> — 空间应被“感受”后才被“阐释”。<br>
+          • <strong>公共气息</strong> — 我们乐于在不同尺度上发掘公共气息，让建筑在私人与城市之间建立友善的接口。<br>
+          • <strong>低碳与技术</strong> — 以 BIM、参数化、生成式 AI 精准整合低碳材料与施工流程，让可持续成为设计的内生属性。<br>
+          • <strong>跨文化叙事</strong> — 将东方的流动与西方的秩序并置，形成易读、耐看的建筑符号。<br><br>
+          我们渴望营造一种“氛围”而非单一风格——一种让好奇心被唤醒、让行为被重新编排的微妙张力。
+          建筑竣工不是句点，而是城市故事的一个新逗号。
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 2) Founder ===== -->
+    <div class="section" id="founder">
+      <h2 class="section-title-main"><a href="#founder">
+        FOUNDER / FONDATEUR / 创始人</a></h2>
+
+      <div class="section-body">
+        <div class="img-box"><img src="images/about_founder.jpg" alt=""></div>
+
+        <div class="lang-fr-en">
+          <div class="lang-block lang-fr">
+            Cai Yicong est né au Lingnan et s’est formé entre Canton, Paris et Lyon.  
+            De la trame urbaine au galbe d’une poignée, il « circule » entre les échelles, convaincu que
+            l’expérience précède toujours le discours.  
+            Après des projets publics en Chine et en France, il crée Para Studio en novembre 2024,
+            où matériaux bas-carbone, BIM, paramétrique et IA générative marient poésie et précision.<br><br>
+            Para Studio dialogue en deux langues, puise dans deux horizons : ombre de bambou,
+            corniches haussmanniennes, algorithme numérique et menuiserie traditionnelle.
+            Pour lui, le chantier n’est que l’ouverture d’une scène : le studio cultive moins une signature
+            qu’une atmosphère durable au cœur de la ville.
+          </div>
+
+          <div class="lang-block lang-en">
+            Born in Lingnan and educated in Guangzhou, Paris and Lyon, Cai Yicong moves freely between scales,
+            believing that experience precedes explanation.  
+            After public projects in China and France, he founded Para Studio in November 2024, where low-carbon
+            materials, BIM, parametric tools and generative AI unite poetry with precision.<br><br>
+            Speaking two languages and drawing on two cultures—bamboo shadows and Haussmann cornices,
+            digital algorithms and handcrafted joinery—Para Studio sees each building as an open-ended theatre,
+            seeking atmosphere over logo, resonance over signature.
+          </div>
+
+          <div class="tabs">
+            <span class="tab-btn active" data-lang="fr" onclick="switchLang('founder','fr')">FR</span>
+            <span class="tab-btn"        data-lang="en" onclick="switchLang('founder','en')">EN</span>
+          </div>
+        </div>
+
+        <div class="lang-cn">
+          蔡一聪 出生于岭南、游学于巴黎与里昂，他始终在“尺度”与“边界”之间自由穿梭——从城市肌理到一枚门把手的曲线，
+          他相信：空间体验先于文字阐释。城市规划的底色，让他敏锐地洞察建筑在大街区里的姿态；
+          法国建筑教育则赋予他诗性与结构并置的双重视角。因此，他坚持：建筑绝非单声部造型，而是一场客户、场地、气候与文化的多声对话。<br><br>
+          在中法两地的公共建筑实践中，他关注博物馆、会议中心、文化综合体与城市客厅——观察光影牵引人流，广场与街角重塑归属感，
+          确信建筑应重新编排公众与城市的关系。2024 年 11 月，他创立 Para Studio，让技术与浪漫并肩：低碳材料、BIM 协同、
+          参数化设计与生成式 AI 像呼吸般自然融入，只为让诗意精准落地。<br><br>
+          Para Studio 以双语沟通，也在双重文化汲取灵感：竹影掠过奥斯曼山墙，数字算法呼应手工榫卯。
+          蔡一聪将建筑视作一幕永不落幕的剧场——当施工结束，空间对人的影响才刚开始；
+          Para Studio 追求的不是刻板签名，而是一种可被共鸣的氛围，召唤好奇、塑造行为，并在城市叙事中留下持久注脚。
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 3) Design Methodology ===== -->
+    <div class="section" id="design-methodology">
+      <h2 class="section-title-main"><a href="#design-methodology">
+        DESIGN METHODOLOGY / MÉTHODOLOGIE / 设计方法论</a></h2>
+
+      <div class="section-body">
+        <div class="img-box"><img src="images/methodologie.png" alt=""></div>
+
+        <div class="lang-fr-en">
+          <div class="lang-block lang-fr">
+            Para Studio adopte un processus « en respiration » : inspirer, expirer, jusqu’à ce que l’espace trouve sa voix.<br><br>
+            <strong>Écouter</strong> — vents, sons, mémoire collective.<br>
+            <strong>Cadre</strong> — ossature urbaine + croquis lumière-volume.<br>
+            <strong>Composer</strong> — BIM, stratégie bas-carbone, continuité intérieur-mobilier.<br>
+            <strong>Co-créer</strong> — modèle immersif, IA générative, feedback instantané.<br>
+            <strong>Concrétiser</strong> — chantier comme ultime itération, audit post-occupation.<br><br>
+            Dans ce cycle, la technologie nourrit la poésie ; chaque trait vise un espace où comportements et émotions peuvent grandir librement.
+          </div>
+
+          <div class="lang-block lang-en">
+            Para Studio works in a “breathing” rhythm—inhale, exhale, until the space speaks.<br><br>
+            <strong>Listen</strong> — winds, sounds, collective memory.<br>
+            <strong>Frame</strong> — urban skeleton & light-volume sketch.<br>
+            <strong>Compose</strong> — BIM hub, low-carbon strategy, interior-furniture continuity.<br>
+            <strong>Co-create</strong> — immersive model, generative AI, instant feedback.<br>
+            <strong>Deliver</strong> — site as final iteration, post-occupancy audit.<br><br>
+            In this inhale-exhale loop, technology fuels poetry and rewrites the bond between city and people, turning space into a living container for action and emotion.
+          </div>
+
+          <div class="tabs">
+            <span class="tab-btn active" data-lang="fr" onclick="switchLang('design-methodology','fr')">FR</span>
+            <span class="tab-btn"        data-lang="en" onclick="switchLang('design-methodology','en')">EN</span>
+          </div>
+        </div>
+
+        <div class="lang-cn">
+          Para Studio 以一条“呼吸式”流程工作——先吸、再释，循环往复，直至空间真正发声。<br><br>
+          <strong>倾听</strong><br>
+          站在场地中央，让风向、声音、记忆与周遭人流先说话；与业主对话，将真实需求转译为可共鸣的故事线。<br><br>
+          <strong>映像</strong><br>
+          在城市—建筑—细部三重网格上同步起稿：城市尺度骨架草图，快速体块与光影动画；手绘氛围 + 参数脚本并行。<br><br>
+          <strong>编排</strong><br>
+          BIM 中枢整合结构、机电与低碳材料策略，实时校准可行性；室内与家具嵌入同一设计语法。<br><br>
+          <strong>协作</strong><br>
+          每次评审都是“城市模拟”：沉浸模型记录反馈；AI 生成多元方案，由设计师裁剪情感。<br><br>
+          <strong>兑现</strong><br>
+          常驻工地微调材料质感与节点；竣工一年回访人流与能耗，为下一建筑提供注脚。<br><br>
+          在这呼—吸循环中，技术成为诗意助燃剂，城市与公众被重新编排；每次落笔都指向让空间成为行为与情感自由生长的容器。
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 4) Our Team ===== -->
+    <div class="section" id="team">
+      <h2 class="section-title-main"><a href="#team">
+        OUR TEAM / ÉQUIPE / 团队</a></h2>
+
+      <div class="section-body">
+        <div class="img-box"><img src="images/equipe.png" alt=""></div>
+
+        <div class="lang-fr-en">
+          <div class="lang-block lang-fr">
+            Un noyau compact, un réseau étendu : deux chefs de projet bilingues fédèrent à la demande ingénieurs structure,
+            consultants façades, spécialistes BIM et designers graphiques entre la France et la Chine — une “cellule nuage”
+            qui garantit réactivité et précision.
+          </div>
+
+          <div class="lang-block lang-en">
+            A lean core, a wide reach: two bilingual project leads assemble on-demand clouds of structural engineers,
+            façade consultants, BIM specialists and graphic designers across France and China, ensuring agility and precision.
+          </div>
+
+          <div class="tabs">
+            <span class="tab-btn active" data-lang="fr" onclick="switchLang('team','fr')">FR</span>
+            <span class="tab-btn"        data-lang="en" onclick="switchLang('team','en')">EN</span>
+          </div>
+        </div>
+
+        <div class="lang-cn">
+          Para Studio 由一支精干的核心设计力量主导，并依托法国与中国的顾问网络，实现从城市策略到材料微观的全链协作。
+          项目推进中，我们会按需组建由结构工程师、幕墙顾问、BIM 技师与品牌视觉设计师组成的“云端工作坊”，确保每一环节都精准落地、互联互通。
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 5) Clients & Collaborations ===== -->
+    <div class="section" id="clients">
+      <h2 class="section-title-main"><a href="#clients">
+        CLIENTS & COLLABORATIONS / PARTENAIRES / 客户·合作</a></h2>
+
+      <div class="section-body">
+        <div class="img-box"><img src="images/partenaires.png" alt=""></div>
+
+        <div class="lang-fr-en">
+          <div class="lang-block lang-fr">
+            Présents à Paris, Lyon, Guangzhou et Shanghai, nous servons organismes publics, pôles culturels,
+            groupes hôteliers et promoteurs privés.<br><br>
+            • Conseil en conception — ingénieurs structure & façades (FR) / laboratoires bas-carbone (CN)<br>
+            • Plateformes académiques — ateliers et recherches avec universités franco-chinoises<br>
+            • Ateliers de savoir-faire — artisans bambou, métal et fabrication numérique
+          </div>
+
+          <div class="lang-block lang-en">
+            Operating in Paris, Lyon, Guangzhou and Shanghai, we serve public agencies, cultural hubs,
+            hospitality groups and private developers.<br><br>
+            • Design consulting — structural & façade engineers (FR) / low-carbon labs (CN)<br>
+            • Academic platforms — joint studios and urban research with French-Chinese universities<br>
+            • Craft partners — bamboo, metal and digital-fabrication workshops
+          </div>
+
+          <div class="tabs">
+            <span class="tab-btn active" data-lang="fr" onclick="switchLang('clients','fr')">FR</span>
+            <span class="tab-btn"        data-lang="en" onclick="switchLang('clients','en')">EN</span>
+          </div>
+        </div>
+
+        <div class="lang-cn">
+          我们的项目足迹覆盖巴黎、里昂、广州与上海，服务对象横跨公共机构、文化园区、酒店集团及私人开发者等多元领域。<br><br>
+          • 设计咨询 —— 与法国的结构 / 幕墙顾问及中国的低碳材料实验室保持长期技术互访；<br>
+          • 学术平台 —— 不定期受邀参与中法高校的工作坊与城市更新研究；<br>
+          • 工艺伙伴 —— 与竹木、金属及数字制造工坊协同，探索传统与前沿工艺的结合。<br><br>
+          通过跨地域、跨尺度的协作方式，我们为每个项目引入最合适的资源，使概念与施工精准衔接，并在中法两地建立起稳定的价值链。
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /container -->
+</body>
+</html>

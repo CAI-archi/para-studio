@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Contact - Para Studio</title>
+  <style>
+    @font-face {
+      font-family: 'BankGothicLight';
+      src: url('fonts/bgothl.ttf') format('truetype');
+      font-weight: 300;
+    }
+    @font-face {
+      font-family: 'BankGothicBold';
+      src: url('fonts/bgothm.ttf') format('truetype');
+      font-weight: 700;
+    }
+
+    body {
+      background: #000;
+      color: #FFF;
+      margin: 0;
+      padding: 0;
+      font-family: 'BankGothicLight', sans-serif;
+    }
+
+    /* Navigation Bar */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #444;
+    }
+    .logo {
+      font-size: 16px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+    nav ul li {
+      margin: 0 10px;
+    }
+    nav ul li a {
+      color: #FFF;
+      text-decoration: none;
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+
+    /* Page Container */
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    /* Page Title (was green, now white) */
+    .page-title {
+      font-family: 'BankGothicBold', sans-serif;
+      font-size: 24px;
+      text-transform: uppercase;
+      text-align: left;
+      margin-bottom: 30px;
+    }
+
+    /* Address Section */
+    .address-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 40px;
+    }
+
+    /* Google Maps Placeholder */
+    .map-box {
+      width: 45%;
+      height: 250px;
+    }
+    .map-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Contact Details */
+    .contact-info {
+      width: 45%;
+    }
+    .contact-info p {
+      font-size: 16px;
+      margin: 5px 0;
+    }
+    .contact-info .info-title {
+      font-family: 'BankGothicBold', sans-serif;
+      font-size: 18px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+/* 禁止所有文字选中 */
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* 禁止图片拖拽、右键保存、点击等 */
+img {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header>
+    <div class="logo">Para Studio</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="project.html">Projects</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li> 
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- White Title -->
+    <h2 class="page-title">CONTACT PARA STUDIO</h2>
+
+    <!-- Paris Office -->
+    <div class="address-section">
+      <div class="map-box">
+        <img src="images/paris.png" alt="Paris Office Map">
+      </div>
+      <div class="contact-info">
+        <p class="info-title">PARIS OFFICE</p>
+        <p>101 rue de Sèvres, 75006 Paris, France</p>
+        <p>Email: parastudiofr@gmail.com</p>
+        <p>Phone: +33 6 51 70 12 49</p>
+      </div>
+    </div>
+
+    <!-- SHANG HAI Office -->
+    <div class="address-section">
+      <div class="map-box">
+        <img src="images/shanghai.png" alt="SHANG HAI Office Map">
+      </div>
+      <div class="contact-info">
+        <p class="info-title">SHANG HAI OFFICE</p>
+        <p>L’emplacement idéal est encore en cours de sélection</p>
+        <p>Email: parastudiohk@gmail.com</p>
+        <p>Phone: +86 130 256 370 92</p>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+// 禁止右键菜单
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+// 禁止选中文本
+document.addEventListener('selectstart', e => e.preventDefault());
+
+// 禁止复制
+document.addEventListener('copy', e => e.preventDefault());
+
+// 禁止拖拽图片
+document.addEventListener('dragstart', e => e.preventDefault());
+
+// 禁止 Ctrl+S / Cmd+S 保存页面
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+    e.preventDefault();
+  }
+});
+
+// 禁止 F12 打开开发者工具
+document.addEventListener('keydown', e => {
+  if (e.key === 'F12') {
+    e.preventDefault();
+  }
+});
+</script>
+
+</body>
+</html>
