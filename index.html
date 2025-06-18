@@ -215,9 +215,9 @@ function createArcPathRange(startAngle, endAngle, radius) {
   const start = polarToCartesian(cx, cy, radius, startAngle);
   const end   = polarToCartesian(cx, cy, radius, endAngle);
 
-  const arcAngle = endAngle - startAngle;
-  const largeArcFlag = (arcAngle > 180) ? 1 : 0;
-  const sweepFlag = 1;
+  const arcAngle      = endAngle - startAngle;
+  const largeArcFlag  = (arcAngle > 180) ? 1 : 0;
+  const sweepFlag     = 1;
 
   return [
     `M${start.x},${start.y}`,
@@ -270,11 +270,15 @@ document.addEventListener('DOMContentLoaded', () => {
     playIntro();
 
     // 监听 HOME 按钮点击 => 重新播放动画
-    document.querySelector('nav ul li a[href="#home"]').addEventListener('click', (e) => {
-        e.preventDefault(); 
-        playIntro();
-    });
-
+const homeLink = document.querySelector(
+  'nav ul li a[href="index.html"], nav ul li a[href="#home"]'
+);
+if (homeLink) {
+  homeLink.addEventListener('click', e => {
+    e.preventDefault();
+    playIntro();
+  });
+}
     // 加载项目
     loadProjects();
 });
@@ -457,13 +461,13 @@ function hoverProject(elem, upperName, imgSrc, bigTitle, normalText) {
     }
 
     // 显示项目简介
-    const descBox = document.getElementById('project-desc');
-    descBox.innerHTML = `
-      <img src="${imgSrc}" alt="Image" />
-      <p class="title">${bigTitle}</p>
-      <p class="desc">${normalText}</p>
-    `;
-    descBox.style.opacity = '1';
+  const descBox = document.getElementById('project-desc');
+  descBox.innerHTML = `
+    <img src="${imgSrc}" alt="Image" />
+    <p class="title">${bigTitle}</p>
+    <p class="desc">${normalText}</p>
+  `;
+  descBox.style.opacity = '1';
 }
 
 function unhoverProject(elem, lowerName) {
