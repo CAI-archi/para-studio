@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PARCELLE N°33, ROUTE XIHAINAN, DISTRICT DE LIWAN, CANTON - Para Studio</title>
+  <style>
+    @font-face {
+      font-family: 'BankGothicLight';
+      src: url('fonts/bgothl.ttf') format('truetype');
+      font-weight: 300;
+    }
+    @font-face {
+      font-family: 'BankGothicBold';
+      src: url('fonts/bgothm.ttf') format('truetype');
+      font-weight: 700;
+    }
+
+    body {
+      background: #000;
+      color: #FFF;
+      margin: 0;
+      padding: 0;
+      font-family: 'BankGothicLight', sans-serif;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    /* Header 顶部导航固定 */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      box-sizing: border-box;
+    }
+
+    .logo {
+      font-size: 16px;
+      font-family: 'BankGothicBold', sans-serif;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+
+    nav ul li {
+      margin: 0 10px;
+    }
+
+    nav ul li a {
+      color: #FFF;
+      text-decoration: none;
+      font-size: 14px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #888;
+    }
+
+/* 通用容器：只保留定位与隐藏溢出 */
+.slider-container {
+  position: relative;
+  overflow: hidden;
+}
+
+/* 主轮播（第0屏）—— 全屏铺满 */
+.slider-container.main-slider {
+  width: 100vw;
+  height: 100vh;
+}
+
+/* 小轮播（第8屏）—— 按需缩放 & 水平居中 */
+.slider-container.mini-slider {
+  width: 120%;        /* 占满父级 .container 的内容宽度 */
+  max-width: 2000px;  /* 想放多大就写多大 */
+  margin: 0 auto;     /* 始终水平居中 */
+  overflow: hidden;
+}
+
+    .slide {
+      display: none;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .slide.active {
+      display: block;
+      animation: fade 1s;
+    }
+
+    @keyframes fade {
+      from {opacity: 0.5}
+      to {opacity: 1}
+    }
+
+    .slider-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: #FFF;
+      border: none;
+      font-size: 36px;
+      font-family: 'BankGothicBold', sans-serif;
+      cursor: pointer;
+      padding: 10px 15px;
+      z-index: 10;
+      transition: background 0.3s;
+    }
+
+    .slider-button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .prev {
+      left: 20px;
+    }
+
+    .next {
+      right: 20px;
+    }
+
+    /* 内容容器 */
+    .container {
+      max-width: 1200px;
+      margin: 100px auto 60px;
+      padding: 0 20px;
+      opacity: 0;
+      transform: translateY(50px) scale(1.02);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+      text-align: center;
+    }
+
+    .container.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .info {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      font-size: 14px;
+      color: #AAA;
+      margin-top: 40px;
+      opacity: 0;
+      transform: translateY(50px) scale(1.02);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .info.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 10px 20px;
+      }
+
+      .slider-button {
+        font-size: 24px;
+        padding: 8px;
+      }
+
+      .info {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .image-slider img:hover {
+      transform: scale(1.02);
+    }
+    .slider-button.prev {
+      left: 20px;
+    }
+    .slider-button.next {
+      right: 20px;
+    }
+/* 在原来 style 末尾，媒体查询外 */
+.container > img {
+  display: block;
+  width: 100%;
+  max-width: 1300px;  /* 和前面大图保持一致 */
+  margin: 0 auto;
+}
+/* 禁止所有文字选中 */
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* 禁止图片拖拽、右键保存、点击等 */
+img {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Header 导航 -->
+  <header>
+    <div class="logo" onclick="window.location.href='index.html'">PARA STUDIO</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="project.html">Projects</a></li>
+        <li><a href="objects.html">Objects</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+<!-- 轮播图 (第0屏) -->
+<div class="slider-container main-slider">
+  <div class="slide active" style="background-image: url('images/parcelle-33-route-xihainan-liwan-canton07.png');"></div>
+  <div class="slide" style="background-image: url('images/parcelle-33-route-xihainan-liwan-canton03.png');"></div>
+  <div class="slide" style="background-image: url('images/parcelle-33-route-xihainan-liwan-canton08.png');"></div>
+
+  <button class="slider-button prev" onclick="plusSlides(-1)">&#10094;</button>
+  <button class="slider-button next" onclick="plusSlides(1)">&#10095;</button>
+</div>
+
+<!-- (第1屏) 项目简介 -->
+<div class="container" id="section-1" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; text-align: left;">
+  <!-- 左侧文字 -->
+  <div style="flex: 1 1 60%; padding-right: 40px;">
+    <h1 style="font-family: 'BankGothicBold'; font-size: 48px; text-transform: uppercase; margin-bottom: 20px;">
+      PARCELLE N°33, ROUTE XIHAINAN, DISTRICT DE LIWAN, CANTON
+    </h1>
+    <h2 style="font-family: 'BankGothicLight'; font-size: 28px; text-transform: capitalize; color: #AAA; margin-bottom: 40px;">
+      Route Sud de Xihai, district de Liwan, Canton, Chine / 2023
+    </h2>
+    <p style="color: #AAA; font-size: 16px; line-height: 1.3; margin-bottom: 20px; font-family: 'Arial';">
+      Situé dans le district de Liwan, à Guangzhou, le projet de la parcelle n°33 sur la route Xihainan est conçu comme un complexe mixte intégrant commerce, loisirs et habitat urbain. Inspiré par les principes de durabilité et d'efficacité, le projet favorise une intégration harmonieuse avec son environnement naturel tout en créant un pôle commercial dynamique au bord du fleuve Zhujiang.
+    </p>
+  </div>
+
+  <!-- 右侧项目信息 -->
+  <div style="flex: 1 1 35%; color: #AAA; font-size: 14px; line-height: 1.8;">
+    <p><strong>Client</strong><br> Gouvernement du district de Liwan, Guangzhou</p>
+    <p><strong>Location</strong><br> Route Sud de Xihai, district de Liwan, Canton, Chine</p>
+    <p><strong>Surface du Terrain</strong><br> 41 318.77 m²</p>
+    <p><strong>Surface de Construction</strong><br> 51 281.6 m²</p>
+    <p><strong>COS</strong><br> 1.24</p>
+    <p><strong>Taux de Végétalisation</strong><br> 35%</p>
+    <p><strong>Programme</strong><br> Centre commercial, loisirs, bureaux, logements</p>
+    <p><strong>Status</strong><br> Projet conceptuel, 2023</p>
+  </div>
+</div>
+
+<!-- (第2屏) 大图：01 -->
+<div class="container" id="section-2" style="
+  width: 100%;
+  height: 100vh;
+  margin: 150px auto;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+">
+  <img src="images/parcelle-33-route-xihainan-liwan-canton01.png"
+       alt="Parcelle n°33 Image 01"
+       style="
+         width: 140%;
+         max-width: 1500px;
+         display: block;
+       ">
+</div>
+
+<!-- (第3屏) 左文字 + 右图：02 -->
+<div class="container" id="section-3" style="
+  width: 100%;
+  max-width: 1500px;
+  margin: 10px auto;
+  padding: 0 00px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  text-align: left;
+">
+  <!-- 左侧文字 -->
+  <div style="flex: 0 0 18%; padding-right: 20px;">
+    <p style="color: #AAA; font-size: 18dpx; font-family: Arial; line-height: 1.6; margin: 0;">
+      La culture est l’âme d’une ville. La culture du Grand Canton, forgée par plus de deux mille ans d’histoire, se distingue par son esprit d’ouverture, d’inclusion, d’innovation et de pragmatisme. Elle nourrit profondément les racines commerciales de Guangzhou et constitue une force motrice pour le développement économique et social durable.<br><br>
+      Dans ce projet, nous avons extrait et abstrait les symboles architecturaux de la culture du Grand Canton et de l’architecture Lingnan, en les transformant en un langage spatial narratif qui organise et articule l’ensemble du site de manière cohérente et évocatrice.
+    </p>
+  </div>
+  <!-- 右侧图片 -->
+  <div style="flex: 0 0 80%; display: flex; justify-content: flex-end; align-items: flex-start;">
+    <img src="images/parcelle-33-route-xihainan-liwan-canton02.png"
+         alt="Parcelle n°33 Image 02"
+         style="width: 100%; max-width: 1700px; height: auto; display: block;">
+  </div>
+</div>
+
+<!-- (第4屏) 大图：16 -->
+<div class="container" id="section-4" style="
+  width: 100%;
+  max-width: 1500px;
+  height: 100vh;
+  margin: 100px auto;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+">
+  <img src="images/parcelle-33-route-xihainan-liwan-canton16.png"
+       alt="Parcelle n°33 Image 16"
+       style="
+         width: 100%;
+         max-width: 1300px;
+         display: block;
+       ">
+</div>
+
+<!-- (第5屏) 大图：17 -->
+<div class="container" id="section-5" style="
+  width: 100%;
+  max-width: 1500px;
+  height: 100vh;
+  margin: 100px auto;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+">
+  <img src="images/parcelle-33-route-xihainan-liwan-canton17.png"
+       alt="Parcelle n°33 Image 17"
+       style="
+         width: 100%;
+         max-width: 1300px;
+         display: block;
+       ">
+</div>
+
+<!-- (第6屏) 大图：18 -->
+<div class="container" id="section-6" style="
+  width: 100%;
+  max-width: 1500px;
+  height: 100vh;
+  margin: 100px auto;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+">
+  <img src="images/parcelle-33-route-xihainan-liwan-canton18.png"
+       alt="Parcelle n°33 Image 18"
+       style="
+         width: 100%;
+         max-width: 1300px;
+         display: block;
+       ">
+</div>
+
+<!-- (第8屏) 小型轮播图：第9–15 张 -->
+<div class="container" id="section-8" style="
+  width: 100%;
+  max-width: 1500px;
+  height: 100vh;
+  margin: 100px auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+">
+  <div class="slider-container mini-slider" style="
+    /* 在这里控制小轮播的大小并且自动水平居中 */
+  width: 100%;
+  max-width: 1400px;  /* 根据你想要的最大尺寸改 */
+  margin: 0 auto;     /* 这样就永远水平居中 */
+  overflow: hidden;
+">
+    <div class="slide active" style="background: none;">
+      <img src="images/parcelle-33-route-xihainan-liwan-canton09.png" alt="Image 9" style="width: 100%; height: auto; display: block;">
+    </div>
+    <div class="slide" style="background: none;">
+      <img src="images/parcelle-33-route-xihainan-liwan-canton10.png" alt="Image 10" style="width: 100%; height: auto; display: block;">
+    </div>
+    <div class="slide" style="background: none;">
+      <img src="images/parcelle-33-route-xihainan-liwan-canton11.png" alt="Image 11" style="width: 100%; height: auto; display: block;">
+    </div>
+    <div class="slide" style="background: none;">
+      <img src="images/parcelle-33-route-xihainan-liwan-canton12.png" alt="Image 12" style="width: 100%; height: auto; display: block;">
+    </div>
+    <div class="slide" style="background: none;">
+      <img src="images/parcelle-33-route-xihainan-liwan-canton13.png" alt="Image 13" style="width: 100%; height: auto; display: block;">
+    </div>
+    <div class="slide" style="background: none;">
+      <img src="images/parcelle-33-route-xihainan-liwan-canton14.png" alt="Image 14" style="width: 100%; height: auto; display: block;">
+    </div>
+    <div class="slide" style="background: none;">
+      <img src="images/parcelle-33-route-xihainan-liwan-canton15.png" alt="Image 15" style="width: 100%; height: auto; display: block;">
+    </div>
+
+    <button class="slider-button prev" onclick="plusSlides2(-1)">&#10094;</button>
+    <button class="slider-button next" onclick="plusSlides2(1)">&#10095;</button>
+  </div>
+</div>
+
+<!-- 第九屏: 视角 07 -->
+<div class="container" id="section-9" style="
+  width: 100%;
+  max-width: 1800px;
+  height: 100vh;
+  margin: 100px auto;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+">
+  <img
+    src="images/parcelle-33-route-xihainan-liwan-canton07.png"
+    alt="Perspective view – Parcelle n°33 (vue 07)"
+   style="
+         width: 100%;
+         max-width: 1600px;
+         display: block;
+       ">
+</div>
+
+<!-- 第十屏: 视角 08 -->
+<div class="container" id="section-10" style="
+  width: 100%;
+  max-width: 1800px;
+  height: 100vh;
+  margin: 100px auto;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+">
+  <img
+    src="images/parcelle-33-route-xihainan-liwan-canton08.png"
+    alt="Perspective view – Parcelle n°33 (vue 08)"
+   style="
+         width: 100%;
+         max-width: 1600px;
+         display: block;
+       ">
+</div>
+
+<!-- 第十一屏: 规划与分区 04 -->
+<div class="container" id="section-11" style="
+  width: 100%;
+  max-width: 1500px;
+  height: 100vh;
+  margin: 100px auto;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+">
+  <img
+    src="images/parcelle-33-route-xihainan-liwan-canton04.png"
+    alt="Zonage et axes paysagers – Parcelle n°33"
+       style="
+         width: 100%;
+         max-width: 1300px;
+         display: block;
+       ">
+</div>
+
+<!-- 第十二屏: 技术与可持续策略 19 -->
+<div class="container" id="section-12" style="
+  width: 100%;
+  max-width: 1500px;
+  height: 100vh;
+  margin: 100px auto;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+">
+  <img
+    src="images/parcelle-33-route-xihainan-liwan-canton19.png"
+    alt="Stratégies techniques et durables – Parcelle n°33"
+       style="
+         width: 100%;
+         max-width: 1300px;
+         display: block;
+       ">
+</div>
+
+<!-- 第十三屏: 慢行系统与自行车道 20 -->
+<div class="container" id="section-13" style="
+  width: 100%;
+  max-width: 1500px;
+  height: 100vh;
+  margin: 100px auto;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+">
+  <img
+    src="images/parcelle-33-route-xihainan-liwan-canton20.png"
+    alt="Réseau cyclable et piéton – Parcelle n°33"
+       style="
+         width: 100%;
+         max-width: 1300px;
+         display: block;
+       ">
+</div>
+
+<!-- 第十四屏: 平面图 21 -->
+<div class="container" id="section-14" style="
+  width: 100%;
+  max-width: 1500px;
+  height: 100vh;
+  margin: 100px auto;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+">
+  <img
+    src="images/parcelle-33-route-xihainan-liwan-canton21.png"
+    alt="Plan masse – Parcelle n°33 (plan 21)"
+       style="
+         width: 100%;
+         max-width: 1300px;
+         display: block;
+       ">
+</div>
+
+<script>
+  // —— 主轮播（第0–2屏） —— //
+  const mainSlider = document.querySelectorAll('.slider-container')[0];
+  const mainSlides = mainSlider.querySelectorAll('.slide');
+  let mainIndex = 0;
+
+  function showMain(index) {
+    mainSlides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === index);
+    });
+  }
+
+  mainSlider.querySelector('.prev').addEventListener('click', () => {
+    mainIndex = (mainIndex - 1 + mainSlides.length) % mainSlides.length;
+    showMain(mainIndex);
+  });
+  mainSlider.querySelector('.next').addEventListener('click', () => {
+    mainIndex = (mainIndex + 1) % mainSlides.length;
+    showMain(mainIndex);
+  });
+
+  // —— 小轮播（第8屏 图9–15） —— //
+  const miniSlider = document.querySelector('#section-8 .slider-container');
+  const miniSlides = miniSlider.querySelectorAll('.slide');
+  let miniIndex = 0;
+
+  function showMini(index) {
+    miniSlides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === index);
+    });
+  }
+
+  miniSlider.querySelector('.prev').addEventListener('click', () => {
+    miniIndex = (miniIndex - 1 + miniSlides.length) % miniSlides.length;
+    showMini(miniIndex);
+  });
+  miniSlider.querySelector('.next').addEventListener('click', () => {
+    miniIndex = (miniIndex + 1) % miniSlides.length;
+    showMini(miniIndex);
+  });
+
+  // —— Intersection Observer —— //
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      e.target.classList.toggle('visible', e.isIntersecting);
+    });
+  }, { threshold: 0.2 });
+
+// 监测 section-1 到 section-14
+for (let i = 1; i <= 14; i++) {
+  const sec = document.getElementById(`section-${i}`);
+  if (sec) observer.observe(sec);
+}
+
+  // —— 初始化 显示第一张 —— //
+  showMain(mainIndex);
+  showMini(miniIndex);
+</script>
+<script>
+// 禁止右键菜单
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+// 禁止选中文本
+document.addEventListener('selectstart', e => e.preventDefault());
+
+// 禁止复制
+document.addEventListener('copy', e => e.preventDefault());
+
+// 禁止拖拽图片
+document.addEventListener('dragstart', e => e.preventDefault());
+
+// 禁止 Ctrl+S / Cmd+S 保存页面
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+    e.preventDefault();
+  }
+});
+
+// 禁止 F12 打开开发者工具
+document.addEventListener('keydown', e => {
+  if (e.key === 'F12') {
+    e.preventDefault();
+  }
+});
+</script>
+
+</body>
+</html>

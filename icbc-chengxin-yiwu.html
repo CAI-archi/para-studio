@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>proposition-conceptuelle-icbc-chengxin-yiwu - Para Studio</title>
+  <style>
+    @font-face {
+      font-family: 'BankGothicLight';
+      src: url('fonts/bgothl.ttf') format('truetype');
+      font-weight: 300;
+    }
+    @font-face {
+      font-family: 'BankGothicBold';
+      src: url('fonts/bgothm.ttf') format('truetype');
+      font-weight: 700;
+    }
+
+    body {
+      background: #000;
+      color: #FFF;
+      margin: 0;
+      padding: 0;
+      font-family: 'BankGothicLight', sans-serif;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    /* Header 顶部导航固定 */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      box-sizing: border-box;
+    }
+
+    .logo {
+      font-size: 16px;
+      font-family: 'BankGothicBold', sans-serif;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+
+    nav ul li {
+      margin: 0 10px;
+    }
+
+    nav ul li a {
+      color: #FFF;
+      text-decoration: none;
+      font-size: 14px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #888;
+    }
+
+    /* 轮播图全屏铺满 */
+    .slider-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .slide.active {
+      display: block;
+      animation: fade 1s;
+    }
+
+    @keyframes fade {
+      from {opacity: 0.5}
+      to {opacity: 1}
+    }
+
+    .slider-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: #FFF;
+      border: none;
+      font-size: 36px;
+      font-family: 'BankGothicBold', sans-serif;
+      cursor: pointer;
+      padding: 10px 15px;
+      z-index: 10;
+      transition: background 0.3s;
+    }
+
+    .slider-button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .prev {
+      left: 20px;
+    }
+
+    .next {
+      right: 20px;
+    }
+
+    /* 内容容器 */
+    .container {
+      max-width: 1200px;
+      margin: 100px auto 60px;
+      padding: 0 20px;
+      opacity: 0;
+      transform: translateY(50px) scale(1.02);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+      text-align: center;
+    }
+
+    .container.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .info {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      font-size: 14px;
+      color: #AAA;
+      margin-top: 40px;
+      opacity: 0;
+      transform: translateY(50px) scale(1.02);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .info.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 10px 20px;
+      }
+
+      .slider-button {
+        font-size: 24px;
+        padding: 8px;
+      }
+
+      .info {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .image-slider img:hover {
+      transform: scale(1.02);
+    }
+    .slider-button.prev {
+      left: 20px;
+    }
+    .slider-button.next {
+      right: 20px;
+    }
+/* 禁止所有文字选中 */
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* 禁止图片拖拽、右键保存、点击等 */
+img {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Header 导航 -->
+  <header>
+    <div class="logo" onclick="window.location.href='index.html'">PARA STUDIO</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="project.html">Projects</a></li>
+        <li><a href="objects.html">Objects</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+<!-- 轮播图 (第0屏) -->
+<div class="slider-container">
+  <div class="slide active" style="background-image: url('images/proposition-conceptuelle-icbc-chengxin-yiwu05.png');"></div>
+  <div class="slide" style="background-image: url('images/proposition-conceptuelle-icbc-chengxin-yiwu06.png');"></div>
+  <div class="slide" style="background-image: url('images/proposition-conceptuelle-icbc-chengxin-yiwu08.png');"></div>
+  <button class="slider-button prev" onclick="plusSlides(-1)">&#10094;</button>
+  <button class="slider-button next" onclick="plusSlides(1)">&#10095;</button>
+</div>
+
+<!-- (第1屏) 项目简介 -->
+<div class="container" id="section-1" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; text-align: left;">
+  <!-- 左侧文字 -->
+  <div style="flex: 1 1 60%; padding-right: 40px;">
+    <h1 style="font-family: 'BankGothicBold'; font-size: 48px; text-transform: uppercase; margin-bottom: 20px;">
+      proposition-conceptuelle-icbc-chengxin-yiwu
+    </h1>
+    <h2 style="font-family: 'BankGothicLight'; font-size: 28px; text-transform: capitalize; color: #AAA; margin-bottom: 40px;">
+      Yiwu, Zhejiang, Chine / 2024
+    </h2>
+    <p style="color: #AAA; font-size: 16px; line-height: 1.3; margin-bottom: 20px; font-family: 'Arial';">
+      Situé sur l’avenue Chengxin à Yiwu, le projet pour l’ICBC couvre une surface de 23 417 m² et comprend un bâtiment de 10 étages avec 3 niveaux de sous-sol. Inspirée par la croissance du bambou, la forme architecturale exprime l’élan et la vitalité, symbolisant le développement de la banque. La conception combine une silhouette moderne et des références culturelles traditionnelles, avec une façade fluide et des lignes montantes. Le bâtiment vise à devenir un nouveau repère urbain dans le quartier central de Yiwu.
+    </p>
+  </div>
+  <!-- 右侧项目信息 -->
+  <div style="flex: 1 1 35%; color: #AAA; font-size: 14px; line-height: 1.8;">
+    <p><strong>Client</strong><br> Banque industrielle et commerciale de Chine (ICBC)</p>
+    <p><strong>Location</strong><br> Avenue Chengxin, Yiwu, Zhejiang, Chine</p>
+    <p><strong>Surface du terrain</strong><br> 4 974 m²</p>
+    <p><strong>Surface bâtie</strong><br> 23 417 m²</p>
+    <p><strong>Programme</strong><br> Bureaux, salles multifonctions, parking souterrain</p>
+    <p><strong>Status</strong><br> Étude conceptuelle, 2024</p>
+  </div>
+</div>
+
+<!-- (第2屏) Intention de Conception（放大图 + 三栏对齐文字） -->
+<div class="container" id="section-2" style="
+  width: 100%;
+  height: 100vh; /* 如果需要铺满屏幕 */
+  margin: 150px auto; /* 给上下留空，滚动更自然 */
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+">
+  <img src="images/proposition-conceptuelle-icbc-chengxin-yiwu01.png"
+       alt="Full Width Image"
+       style="
+         width: 100%;
+         max-width: 1300px;
+         display: block;
+       ">
+</div>
+
+<!-- 第三屏 -->
+<div class="container" id="section-3" style="
+  width: 100%;
+  height: 100vh; /* 如果需要铺满屏幕 */
+  margin: 150px auto; /* 给上下留空，滚动更自然 */
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+">
+  <img src="images/proposition-conceptuelle-icbc-chengxin-yiwu02.png"
+       alt="Full Width Image"
+       style="
+         width: 100%;
+         max-width: 1300px;
+         display: block;
+       ">
+</div>
+
+<!-- 第四屏 -->
+<div class="container" id="section-5" style="
+  margin: 120px auto;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+">
+  <img src="images/proposition-conceptuelle-icbc-chengxin-yiwu03.png"
+       alt="06大图"
+       style="
+         width: 100%;
+         max-width: 1500px; /* 和第三屏对齐 */
+         display: block;
+       ">
+</div>
+
+<!-- 第五屏 -->
+<div class="container" id="section-5" style="
+  margin: 120px auto;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+">
+  <img src="images/proposition-conceptuelle-icbc-chengxin-yiwu04.png"
+       alt="06大图"
+       style="
+         width: 100%;
+         max-width: 1500px; /* 和第三屏对齐 */
+         display: block;
+       ">
+</div>
+
+<!-- 第六屏 -->
+<div class="container" id="section-6" style="
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1500px;
+  margin: 120px auto;
+  padding: 0 20px;
+  text-align: center;
+">
+
+  <img src="images/proposition-conceptuelle-icbc-chengxin-yiwu05.png"
+       alt="Image 07"
+       style="
+         width: 100%;
+         max-width: 1200px;
+         display: block;
+       ">
+</div>
+
+<!-- 第七屏 -->
+<div class="container" id="section-7" style="
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1500px;
+  margin: 120px auto;
+  padding: 0 20px;
+  text-align: center;
+">
+
+  <img src="images/proposition-conceptuelle-icbc-chengxin-yiwu07.png"
+       alt="Image 10"
+       style="
+         width: 100%;
+         max-width: 1200px;
+         display: block;
+       ">
+</div>
+
+<!-- 第八屏 -->
+<div class="container" id="section-8" style="
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1500px;
+  margin: 120px auto;
+  padding: 0 20px;
+  text-align: center;
+">
+
+  <img src="images/proposition-conceptuelle-icbc-chengxin-yiwu09.png"
+       alt="Image 10"
+       style="
+         width: 100%;
+         max-width: 1200px;
+         display: block;
+       ">
+</div>
+
+<!-- 第九屏 -->
+<div class="container" id="section-9" style="
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1500px;
+  margin: 120px auto;
+  padding: 0 20px;
+  text-align: center;
+">
+
+  <img src="images/proposition-conceptuelle-icbc-chengxin-yiwu10.png"
+       alt="Image 10"
+       style="
+         width: 100%;
+         max-width: 1200px;
+         display: block;
+       ">
+</div>
+
+<!-- 第十屏 -->
+<div class="container" id="section-10" style="
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1500px;
+  margin: 120px auto;
+  padding: 0 20px;
+  text-align: center;
+">
+
+  <img src="images/proposition-conceptuelle-icbc-chengxin-yiwu06.png"
+       alt="Image 10"
+       style="
+         width: 100%;
+         max-width: 1200px;
+         display: block;
+       ">
+</div>
+
+<!-- 第十一屏 -->
+<div class="container" id="section-11" style="
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1500px;
+  margin: 120px auto;
+  padding: 0 20px;
+  text-align: center;
+">
+
+  <img src="images/proposition-conceptuelle-icbc-chengxin-yiwu12.png"
+       alt="Image 11"
+       style="
+         width: 100%;
+         max-width: 1200px;
+         display: block;
+       ">
+</div>
+
+<!-- 第十二屏 -->
+<div class="container" id="section-12" style="
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1500px;
+  margin: 120px auto;
+  padding: 0 20px;
+  text-align: center;
+">
+
+  <img src="images/proposition-conceptuelle-icbc-chengxin-yiwu08.png"
+       alt="Image 12"
+       style="
+         width: 100%;
+         max-width: 1200px;
+         display: block;
+       ">
+</div>
+
+<!-- 第十三屏 -->
+<div class="container" id="section-13" style="
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1500px;
+  margin: 120px auto;
+  padding: 0 20px;
+  text-align: center;
+">
+
+  <img src="images/proposition-conceptuelle-icbc-chengxin-yiwu11.png"
+       alt="Image 13"
+       style="
+         width: 100%;
+         max-width: 1200px;
+         display: block;
+       ">
+</div>
+
+<!-- (第十四屏) 小型轮播图：第9–15 张 -->
+<div class="container" id="section-14" style="
+  width: 100%;
+  max-width: 1500px;
+  height: 100vh;
+  margin: 100px auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+">
+  <div class="slider-container mini-slider" style="
+    /* 在这里控制小轮播的大小并且自动水平居中 */
+  width: 100%;
+  max-width: 1400px;  /* 根据你想要的最大尺寸改 */
+  margin: 0 auto;     /* 这样就永远水平居中 */
+  overflow: hidden;
+">
+    <div class="slide active" style="background: none;">
+      <img src="images/proposition-conceptuelle-icbc-chengxin-yiwu13.png" alt="Image 9" style="width: 100%; height: auto; display: block;">
+    </div>
+    <div class="slide" style="background: none;">
+      <img src="images/proposition-conceptuelle-icbc-chengxin-yiwu14.png" alt="Image 10" style="width: 100%; height: auto; display: block;">
+    </div>
+    <div class="slide" style="background: none;">
+      <img src="images/proposition-conceptuelle-icbc-chengxin-yiwu18.png" alt="Image 11" style="width: 100%; height: auto; display: block;">
+    </div>
+    <div class="slide" style="background: none;">
+      <img src="images/proposition-conceptuelle-icbc-chengxin-yiwu21.png" alt="Image 12" style="width: 100%; height: auto; display: block;">
+    </div>
+    <div class="slide" style="background: none;">
+      <img src="images/proposition-conceptuelle-icbc-chengxin-yiwu23.png" alt="Image 13" style="width: 100%; height: auto; display: block;">
+    </div>
+    <div class="slide" style="background: none;">
+      <img src="images/proposition-conceptuelle-icbc-chengxin-yiwu25.png" alt="Image 14" style="width: 100%; height: auto; display: block;">
+    </div>
+    <div class="slide" style="background: none;">
+      <img src="images/proposition-conceptuelle-icbc-chengxin-yiwu26.png" alt="Image 15" style="width: 100%; height: auto; display: block;">
+    </div>
+
+    <button class="slider-button prev" onclick="plusSlides2(-1)">&#10094;</button>
+    <button class="slider-button next" onclick="plusSlides2(1)">&#10095;</button>
+  </div>
+</div>
+
+<script>
+  // —— 主轮播（第0–2屏） —— //
+  const mainSlider = document.querySelectorAll('.slider-container')[0];
+  const mainSlides = mainSlider.querySelectorAll('.slide');
+  let mainIndex = 0;
+
+  function showMain(index) {
+    mainSlides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === index);
+    });
+  }
+
+  mainSlider.querySelector('.prev').addEventListener('click', () => {
+    mainIndex = (mainIndex - 1 + mainSlides.length) % mainSlides.length;
+    showMain(mainIndex);
+  });
+  mainSlider.querySelector('.next').addEventListener('click', () => {
+    mainIndex = (mainIndex + 1) % mainSlides.length;
+    showMain(mainIndex);
+  });
+
+  // 兼容 HTML 上的 plusSlides 调用
+  function plusSlides(n) {
+    mainIndex = (mainIndex + n + mainSlides.length) % mainSlides.length;
+    showMain(mainIndex);
+  }
+
+  // —— 小轮播（第14屏） —— //
+  const miniSlider = document.querySelector('.slider-container.mini-slider');
+  const miniSlides = miniSlider.querySelectorAll('.slide');
+  let miniIndex = 0;
+
+  function showMini(index) {
+    miniSlides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === index);
+    });
+  }
+
+  // 供按钮调用
+  function plusSlides2(n) {
+    miniIndex = (miniIndex + n + miniSlides.length) % miniSlides.length;
+    showMini(miniIndex);
+  }
+
+  // 初始化显示
+  showMain(mainIndex);
+  showMini(miniIndex);
+
+  // —— Intersection Observer —— //
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      e.target.classList.toggle('visible', e.isIntersecting);
+    });
+  }, { threshold: 0.2 });
+
+  // 监测 section-1 到 section-14
+  for (let i = 1; i <= 14; i++) {
+    const sec = document.getElementById(`section-${i}`);
+    if (sec) observer.observe(sec);
+  }
+</script>
+<script>
+// 禁止右键菜单
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+// 禁止选中文本
+document.addEventListener('selectstart', e => e.preventDefault());
+
+// 禁止复制
+document.addEventListener('copy', e => e.preventDefault());
+
+// 禁止拖拽图片
+document.addEventListener('dragstart', e => e.preventDefault());
+
+// 禁止 Ctrl+S / Cmd+S 保存页面
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+    e.preventDefault();
+  }
+});
+
+// 禁止 F12 打开开发者工具
+document.addEventListener('keydown', e => {
+  if (e.key === 'F12') {
+    e.preventDefault();
+  }
+});
+</script>
+
+</body>
+</html>

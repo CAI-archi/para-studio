@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Para Studio</title>
+  <style>
+    /* 1) 声明字体：细体BankGothicLight & 粗体BankGothicBold */
+    @font-face {
+      font-family: 'BankGothicLight';
+      src: url('fonts/bgothl.ttf') format('truetype');
+      font-weight: 300;
+    }
+    @font-face {
+      font-family: 'BankGothicBold';
+      src: url('fonts/bgothm.ttf') format('truetype');
+      font-weight: 700;
+    }
+
+    /* 2) 全局黑背景、白字、默认细体 */
+    body {
+      background: #000; 
+      color: #fff;
+      margin: 0; 
+      padding: 0;
+      overflow: hidden;
+      text-align: center;
+      font-family: 'BankGothicLight', sans-serif;
+    }
+
+    /* 3) Intro：公司名称 + 动画 */
+    .intro {
+      position: fixed;
+      width: 100vw; 
+      height: 100vh;
+      display: flex; 
+      justify-content: center; 
+      align-items: center;
+      background: #000;
+      font-size: clamp(40px, 10vmin, 75px);
+      font-weight: bold;
+      opacity: 0;
+      animation: fadeEffect 5s ease-in-out forwards; 
+    }
+    @keyframes fadeEffect {
+      0%   { opacity: 0; transform: scale(1); }
+      70%  { opacity: 1; transform: scale(1); }  
+      100% { opacity: 1; transform: scale(0.6) translateY(60px); }
+    }
+    .intro {
+      animation: fadeEffect 5s ease-in-out forwards;
+    }
+
+    /* 4) 顶栏 (intro后显示) */
+    header {
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #444;
+      font-size: 12px;
+    }
+    .logo {
+      font-size: 16px; 
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    nav ul {
+      list-style: none; 
+      margin: 0; 
+      padding: 0; 
+      display: flex;
+    }
+    nav ul li { margin: 0 10px; }
+    nav ul li a {
+      color: #FFF;
+      text-decoration: none;
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+
+    /* 5) 主区 */
+    .hero {
+      position: relative;
+      width: 100vw; 
+      height: 100vh;
+    }
+    .radial-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: none; /* intro结束后显示 */
+      width: 110vmin;       
+      height: 110vmin;
+      max-width: 1500px;  
+      max-height: 1500px;
+    }
+
+    /* 7) 中心简介 => 包含图片(红框), 标题(大), 第二行(小) => 全居中 */
+    #project-desc {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: clamp(200px, 40vmin, 500px);
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.2s ease-in-out;
+      font-family: 'BankGothicLight', sans-serif;
+    }
+    #project-desc img {
+      display: block;
+      margin: 0 auto 10px;
+      max-width: 100%;
+      height: auto;
+      border: none;
+    }
+    #project-desc .title {
+      font-family: 'BankGothicBold', sans-serif;
+      font-size: clamp(12px, 3vmin, 20px);
+      margin: 0;
+      padding: 0;
+      text-transform: uppercase;
+    }
+    #project-desc .desc {
+      font-family: 'BankGothicLight', sans-serif;
+      font-size: clamp(8px, 2vmin, 12px);
+      margin: 5px 0 0 0;
+      padding: 0;
+      text-transform: none;
+      line-height: 1.4;
+    }
+
+    /* 8) 项目名称 => 默认18px */
+    text {
+      font-size: 18px;
+      fill: #FFF;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+    textPath:hover {
+      cursor: pointer;
+    }
+/* 禁止所有文字选中 */
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* 禁止图片拖拽、右键保存、点击等 */
+img {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Intro 3.5s -->
+  <div class="intro" id="studio-name">PARA STUDIO</div>
+
+  <!-- 2) 顶栏 -->
+  <header>
+    <div class="logo">Para Studio</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="project.html">Projects</a></li>
+        <li><a href="objects.html">Objects</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="home" class="hero">
+    <div id="project-desc"></div>
+    <div class="radial-container">
+      <svg viewBox="0 0 1200 1200">
+        <defs id="paths-container"></defs>
+        <text id="projects-group"></text>
+      </svg>
+    </div>
+
+    <!-- 用来测量文字宽度的隐藏 canvas -->
+    <canvas id="measureCanvas" width="600" height="100" style="display:none;"></canvas>
+  </section>
+
+<script>
+// ====== 你可根据需要微调的参数 ======
+const defaultFontSize = 18;  
+const hoverFontSize   = 26;  
+// 调整后的弧段余量(可改小/改大)
+const arcSpanDeg = 120; 
+
+// 圆心 & 半径
+const cx = 600, cy = 590;
+const baseRadius = 450; 
+
+// ============ 工具函数 ============
+
+function polarToCartesian(cx, cy, r, angleDegFromTop) {
+  // 0° = 顶部
+  const rad = (angleDegFromTop - 90) * Math.PI / 180;
+  const x = cx + r * Math.cos(rad);
+  const y = cy + r * Math.sin(rad);
+  return { x, y };
+}
+
+function createArcPathRange(startAngle, endAngle, radius) {
+  const start = polarToCartesian(cx, cy, radius, startAngle);
+  const end   = polarToCartesian(cx, cy, radius, endAngle);
+
+  const arcAngle = endAngle - startAngle;
+  const largeArcFlag = (arcAngle > 180) ? 1 : 0;
+  const sweepFlag = 1;
+
+  return [
+    `M${start.x},${start.y}`,
+    `A${radius},${radius} 0 ${largeArcFlag},${sweepFlag} ${end.x},${end.y}`
+  ].join(' ');
+}
+
+// 测量文本像素宽度
+function measureTextWidth(text, fontSize, fontFamily) {
+  const canvas = document.getElementById('measureCanvas');
+  const ctx = canvas.getContext('2d');
+  ctx.font = fontSize + 'px ' + fontFamily; 
+  return ctx.measureText(text).width;
+}
+
+// 把像素宽度 => 角度
+function pxWidthToAngle(pxWidth, radius) {
+  const circumference = 2 * Math.PI * radius; 
+  return (pxWidth / circumference) * 360;
+}
+
+// ============ 主逻辑 ============
+
+document.addEventListener('DOMContentLoaded', () => {
+    function playIntro() {
+        const intro = document.querySelector('.intro');
+        const header = document.querySelector('header');
+        const radialContainer = document.querySelector('.radial-container');
+
+        // 重置动画
+        intro.style.animation = 'none';
+        intro.style.opacity = '1';
+        intro.style.transform = 'scale(1) translateY(0)';
+        header.style.display = 'none';
+        radialContainer.style.display = 'none';
+
+        // 强制回流
+        void intro.offsetWidth;
+
+        // 重新应用动画
+        intro.style.animation = 'fadeEffect 3.5s ease-in-out forwards';
+
+        // 动画结束后再显示
+        setTimeout(() => {
+            header.style.display = 'flex';
+            radialContainer.style.display = 'block';
+        }, 3500);
+    }
+
+    playIntro();
+
+    // 监听 HOME 按钮点击 => 重新播放动画
+    document.querySelector('nav ul li a[href="#home"]').addEventListener('click', (e) => {
+        e.preventDefault(); 
+        playIntro();
+    });
+
+    // 加载项目
+    loadProjects();
+});
+
+// ============ 你的项目数据 ============
+// 注意: 新增了 "link" 字段指向详情页
+const data = [
+    {
+    offset: 5,
+    lower: 'jiangkou revolutionnaire',
+    upper: 'SITE HISTORIQUE DE JIANGKOU',
+    img: 'images/site-revolutionnaire-jiangkou-hexi01.jpg',
+    title: 'SITE RÉVOLUTIONNAIRE DE JIANGKOU, HEXI',
+    text: 'Site Historique de l\'Ancien Quartier Général de la 25ème Armée Rouge Village de Hexi, Bourg de Jiangkou, Comté de Liuba, Ville de Hanzhong, Province du Shaanxi, Chine',
+    link: 'site-revolutionnaire-jiangkou-hexi.html'
+    },
+    {
+        offset: 15,
+    lower: 'pôle innovation robotique',
+    upper: 'PÔLE D’INNOVATION COLLABORATIVE EN ROBOTIQUE',
+    img: 'images/pole-innovation-robotique06.jpg',
+    title: 'PÔLE D’INNOVATION COLLABORATIVE EN ROBOTIQUE',
+    text: ' Le « Pôle d’Innovation Collaborative en Robotique » est situé dans le parc industriel de robots de Xifuhe, à Yancheng, dans la province du Jiangsu, en Chine.  Ce projet construit réunit des fonctions d’exposition, de bureaux et d’échanges techniques. L’architecture s’inspire du langage formel de la robotique contemporaine, exprimant la dynamique, la structure et la précision par des volumes modulaires et des lignes fluides.',
+     link: 'pole-innovation-robotique.html'
+    },
+{
+    offset: 25,
+        lower: 'centre sanwa',
+        upper: 'CENTRE COMMUNAUTAIRE DE SANWA',
+        img: 'images/centre-communautaire-sanwa-tinghu-yancheng21.png',
+        title: 'CENTRE COMMUNAUTAIRE DE SANWA, TINGHU',
+        text: 'Réhabilitation d’un socle commercial en centre civique durable à Yancheng, intégrant façade biomimétique et toiture-parc pour promouvoir un mode de vie communautaire bas carbone.',
+        link: 'centre-communautaire-sanwa-tinghu.html' 
+},
+{
+  offset: 35,
+    lower: 'hotel zhuxi',
+    upper: 'HÔTEL DE CHARME – ZHUXI, YANCHENG',
+    img: 'images/hotel-charme-zhuxi-yancheng5.png',
+    title: 'PROPOSITION CONCEPTUELLE D\'HÔTEL DE CHARME – VIEILLE VILLE DE ZHUXI, YANCHENG',
+    text: 'Situé à l’entrée principale de la vieille ville de Zhuxi, à Yancheng, ce projet propose un hôtel boutique inspiré de l’architecture traditionnelle.',
+    link: 'hotel-charme-zhuxi-yancheng.html'
+},
+{
+  offset: 35,
+    lower: 'robotique xifu urbain',
+    upper: 'PARC ROBOTIQUE URBAIN – XIFU',
+    img: 'images/concept-parc-robotique-xifu-yancheng7.png',
+    title: 'CONCEPT URBAIN ET RÉGLEMENTAIRE DU PARC INDUSTRIEL ROBOTIQUE RIVIÈRE XIFU À YANCHENG',
+    text: 'Situé en rive de la rivière XiFu à Yancheng, ce projet vise à établir un parc industriel dédié à la robotique, intégrant planification urbaine et cadre réglementaire. L’enjeu est de créer un environnement sécurisé et performant pour la R&amp;D et la production, tout en assurant la conformité aux normes environnementales et d’urbanisme locales.',
+    link: 'concept-parc-robotique-xifu-yancheng.html'
+},
+    {
+        offset: 55,
+        lower: 'la tour de l\'embresse',
+        upper: 'LA TOUR DE L\'EMBRESSE',
+        img: 'images/la-tour-de-lembresse00.png',
+        title: 'LA TOUR DE L\'EMBRESSE',
+        text: 'Le projet “La Tour de l’Embrasse” propose une réponse poétique au renouveau de Détroit. Émergeant des ruines de la « ville géante », la tour, formée par deux visages s’embrassant, incarne l’espoir, l’amour et la résilience. Visible depuis la rivière, elle devient un phare symbolique pour les rêveurs d’un avenir durable et sensible.',
+        link: 'la-tour-de-lembresse.html'
+    },
+    {
+        offset: 65,
+    lower: 'e-commerce yannan',
+    upper: 'PARC E-COMMERCE DE YANNAN',
+    img: 'images/projet-ecommerce-transfrontalier-yannan17.png',
+    title: 'PROJET E-COMMERCE TRANSFRONTALIER DE YANNAN',
+    text: 'Concept urbain et réglementaire du parc e-commerce transfrontalier de Yannan, intégrant zones logistiques et commerciales transfrontalières.',
+    link: 'ecommerce-transfrontalier-yannan.html'
+   },
+{
+    offset: 75,
+    lower: 'icbc yiwu',
+    upper: 'ICBC – YIWU, AVENUE CHENGXIN',
+    img: 'images/proposition-conceptuelle-icbc-chengxin-yiwu05.png',
+    title: 'PROPOSITION CONCEPTUELLE – ICBC, AVENUE CHENGXIN, YIWU',
+    text: 'Concept architectural pour le siège ICBC à Yiwu. Une silhouette dynamique inspirée du bambou.',
+    link: 'icbc-chengxin-yiwu.html'
+   },
+{
+  offset: 85,
+    lower: 'parcelle xihainan',
+    upper: 'PARCELLE 33 – LIWAN, CANTON',
+    img: 'images/parcelle-33-route-xihainan-liwan-canton07.png',
+    title: 'PARCELLE N°33, ROUTE XIHAINAN, DISTRICT DE LIWAN, CANTON',
+    text: 'Situé dans le district de Liwan, à Guangzhou, le projet de la parcelle n°33 sur la route Xihainan est conçu comme un complexe mixte intégrant commerce, loisirs et habitat urbain. Inspiré par les principes de durabilité et d\'efficacité, le projet favorise une intégration harmonieuse avec son environnement naturel tout en créant un pôle commercial dynamique au bord du fleuve Zhujiang.',
+    link: 'parcelle-33-route-xihainan-liwan.html'
+},
+    {
+        offset: 95,
+    lower: 'bâtiments quzhou',
+    upper: 'LES BÂTIMENTS EMBLÉMATIQUES DE QUZHOU',
+    img: 'images/concours-batiments-emblematiques-quzhou03.jpg',
+    title: 'LES BÂTIMENTS EMBLÉMATIQUES DE QUZHOU',
+    text: 'Concours International de Conception pour les Bâtiments Emblématiques de Quzhou，Le site du projet occupe une position stratégique, à l’extrémité de l’axe central de la gare ferroviaire ouest de Quzhou, en bordure du lac Wenli. Il constitue à la fois la première carte postale de la nouvelle ville de Quzhou et un nœud clé reliant la zone urbaine au paysage lacustre.',
+     link: 'batiments-emblematiques-quzhou.html'
+    },
+];
+
+function loadProjects() {
+  const defsContainer = document.getElementById('paths-container');
+  const parent        = document.getElementById('projects-group');
+  const itemCount     = data.length;
+  const circumference = 2 * Math.PI * baseRadius;
+
+  // 1) 先算出每条文字的默认角度
+  const defaultAngles = data.map(p => {
+    const wDef = measureTextWidth(p.lower, defaultFontSize, 'BankGothicLight');
+    return pxWidthToAngle(wDef, baseRadius);
+  });
+  const sumDefault = defaultAngles.reduce((sum, a) => sum + a, 0);
+
+  // 2) 均分剩余角度给间隙
+  const gapAngle = (360 - sumDefault) / itemCount;
+
+  // 3) 计算放大时的最大额外宽度（只要一份，足够所有段避免裁切）
+  let maxDeltaPx = 0;
+  data.forEach(p => {
+    const wDef   = measureTextWidth(p.lower, defaultFontSize, 'BankGothicLight');
+    const wHover = measureTextWidth(p.upper, hoverFontSize,   'BankGothicBold');
+    maxDeltaPx   = Math.max(maxDeltaPx, wHover - wDef);
+  });
+  // 多留些额外缓冲，避免放大后被裁切
+  const extraBufferPx = 200;  // 根据需要调大，比如 80、100 看效果
+  const marginAngle = pxWidthToAngle(maxDeltaPx + extraBufferPx, baseRadius);
+  const halfMarginA    = marginAngle / 2;
+
+  // 4) 逐段排布：只用 defaultAngles 和 gapAngle 决定文字中心；路径额外加上两端 halfMarginA
+  let currentAngle = 0;
+  data.forEach((p, i) => {
+    const defA      = defaultAngles[i];
+    const startA    = currentAngle;
+    const endA      = startA + defA;
+
+    // 路径从 startA - halfMarginA 到 endA + halfMarginA
+    const dStr = createArcPathRange(startA - halfMarginA, endA + halfMarginA, baseRadius);
+    const pathId = 'projectArc' + i;
+    const pathElem = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    pathElem.setAttribute('id', pathId);
+    pathElem.setAttribute('fill', 'none');
+    pathElem.setAttribute('stroke', 'transparent');
+    pathElem.setAttribute('d', dStr);
+    defsContainer.appendChild(pathElem);
+
+    // 文字依然居中在 defA 上：startOffset = (halfMarginA + defA/2) / (defA + marginAngle)
+    const offsetPct = ( (halfMarginA + defA/2) / (defA + marginAngle) * 100 ).toFixed(2) + '%';
+    const tp = document.createElementNS('http://www.w3.org/2000/svg', 'textPath');
+    tp.setAttribute('href', '#' + pathId);
+    tp.setAttribute('startOffset', offsetPct);
+    tp.textContent = p.lower;
+    tp.style.fontSize = defaultFontSize + 'px';
+
+    tp.addEventListener('mouseover', () => hoverProject(tp, p.upper, p.img, p.title, p.text));
+    tp.addEventListener('mouseout',  () => unhoverProject(tp, p.lower));
+    tp.addEventListener('click',    () => window.location.href = p.link);
+
+    parent.appendChild(tp);
+
+    // 文字段走完，留 gapAngle
+    currentAngle = endA + gapAngle;
+  });
+}
+// —————— 新版结束 ——————
+function hoverProject(elem, upperName, imgSrc, bigTitle, normalText) {
+    const all = document.querySelectorAll('#projects-group textPath');
+    all.forEach(x => {
+        if (x !== elem) x.style.opacity = '0.25';
+    });
+
+    // 放大 + Bold
+    elem.style.fontFamily = 'BankGothicBold';
+    elem.style.fontSize   = hoverFontSize + 'px';
+    elem.setAttribute('dy', '-5');
+    elem.textContent = upperName;
+
+    // 让 PARA STUDIO 消失
+    const studioName = document.querySelector('.intro');
+    if (studioName) {
+        studioName.style.visibility = 'hidden';
+    }
+
+    // 显示项目简介
+    const descBox = document.getElementById('project-desc');
+    descBox.innerHTML = `
+      <img src="${imgSrc}" alt="Image" />
+      <p class="title">${bigTitle}</p>
+      <p class="desc">${normalText}</p>
+    `;
+    descBox.style.opacity = '1';
+}
+
+function unhoverProject(elem, lowerName) {
+    // 所有项目恢复
+    const all = document.querySelectorAll('#projects-group textPath');
+    all.forEach(x => x.style.opacity = '1');
+
+    // 恢复默认
+    elem.style.fontFamily = 'BankGothicLight';
+    elem.style.fontSize   = defaultFontSize + 'px';
+    elem.textContent      = lowerName;
+    elem.removeAttribute('dy');
+
+    // PARA STUDIO 出现
+    const studioName = document.getElementById('studio-name');
+    if (studioName) {
+        studioName.style.visibility = 'visible';
+    }
+
+    // 隐藏简介
+    const descBox = document.getElementById('project-desc');
+    descBox.style.opacity = '0';
+}
+</script>
+<script>
+// 禁止右键菜单
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+// 禁止选中文本
+document.addEventListener('selectstart', e => e.preventDefault());
+
+// 禁止复制
+document.addEventListener('copy', e => e.preventDefault());
+
+// 禁止拖拽图片
+document.addEventListener('dragstart', e => e.preventDefault());
+
+// 禁止 Ctrl+S / Cmd+S 保存页面
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+    e.preventDefault();
+  }
+});
+
+// 禁止 F12 打开开发者工具
+document.addEventListener('keydown', e => {
+  if (e.key === 'F12') {
+    e.preventDefault();
+  }
+});
+</script>
+
+</body>
+</html>
