@@ -273,6 +273,12 @@ img {
   <!-- 主内容：10 个项目列表，与主页对应 -->
   <div class="container">
     <h2>Our Projects</h2>
+<div id="interiorNotice" style="display:none; text-align:center; margin:250px auto; line-height:1.8;">
+  <p>Les projets d’intérieur sont en cours de composition.</p>
+  <p>Interior projects are under composition.</p>
+  <p>室内项目的呈现正在编排中，敬请期待。</p>
+</div>
+
     <div class="grid" id="projectGrid">
 
       <!-- 1) Parcelle n°33, Route Xihainan, District de Liwan, Canton -->
@@ -459,19 +465,29 @@ img {
     let currentSubcategory = 'all';  // 当前激活的二级分类
     let searchKeyword = '';          // 搜索关键词
 
-    // 切换主分类
-    categoryBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        categoryBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentCategory = btn.getAttribute('data-category');
-        currentSubcategory = 'all';
+// 切换主分类
+categoryBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    // 1) 切换按钮状态
+    categoryBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCategory = btn.getAttribute('data-category');
+    currentSubcategory = 'all';
 
-        showSubSubmenu(currentCategory);
-        resetSubcategoryActive(currentCategory);
-        filterProjects();
-      });
-    });
+    // 2) 切换二级菜单
+    showSubSubmenu(currentCategory);
+    resetSubcategoryActive(currentCategory);
+
+    // 3) 显示／隐藏室内提示
+    const interiorNotice = document.getElementById('interiorNotice');
+    if (interiorNotice) {
+      interiorNotice.style.display = (currentCategory === 'interior') ? 'block' : 'none';
+    }
+
+    // 4) 再运行一次过滤
+    filterProjects();
+  });
+});
 
     function showSubSubmenu(category) {
       subSubmenus.forEach(menu => menu.classList.remove('active'));
