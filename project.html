@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Projects - Para Studio</title>
+  <style>
+    /* ========== 字体设置 ========== */
+    @font-face {
+      font-family: 'BankGothicLight';
+      src: url('fonts/bgothl.ttf') format('truetype');
+      font-weight: 300;
+    }
+    @font-face {
+      font-family: 'BankGothicBold';
+      src: url('fonts/bgothm.ttf') format('truetype');
+      font-weight: 700;
+    }
+
+    body {
+      background: #000;
+      color: #FFF;
+      margin: 0;
+      padding: 0;
+      font-family: 'BankGothicLight', sans-serif;
+    }
+
+    /* ========== 顶部导航（保持原样） ========== */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #444; /* 顶部那条线 */
+    }
+    .logo {
+      font-size: 16px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+    nav ul li {
+      margin: 0 10px;
+    }
+    nav ul li a {
+      color: #FFF;
+      text-decoration: none;
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+
+    /* ========== 分类与搜索区域 ========== */
+    .filter-bar {
+      padding: 10px 20px;
+    }
+    .submenu {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap; /* 如果按钮过多，自动换行 */
+      margin-bottom: 10px;
+    }
+    .submenu span {
+      margin-right: 10px;
+      font-family: 'BankGothicBold', sans-serif;
+    }
+    .category-btn {
+      background: none;
+      border: none;
+      color: #AAA;
+      font-size: 14px;
+      margin-right: 15px;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-family: 'BankGothicLight', sans-serif;
+    }
+    .category-btn.active {
+      color: #FFF;
+      font-family: 'BankGothicBold', sans-serif;
+    }
+
+    .search-box {
+      margin-left: auto; /* 搜索框靠右 */
+    }
+    .search-box input {
+      background: #111;
+      border: 1px solid #444;
+      color: #FFF;
+      padding: 5px 10px;
+      font-size: 14px;
+      font-family: 'BankGothicLight', sans-serif;
+    }
+    .search-box input::placeholder {
+      color: #666;
+    }
+
+    /* 二级分类菜单 */
+    .sub-submenu {
+      display: none; /* 默认隐藏 */
+      margin-bottom: 10px;
+      padding-left: 20px; /* 让它与主分类略有层级感 */
+    }
+    .sub-submenu.active {
+      display: flex;
+    }
+    .subcategory-btn {
+      background: none;
+      border: none;
+      color: #AAA;
+      font-size: 14px;
+      margin-right: 15px;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-family: 'BankGothicLight', sans-serif;
+    }
+    .subcategory-btn.active {
+      color: #FFF;
+      font-family: 'BankGothicBold', sans-serif;
+    }
+
+    /* ========== 主内容区 ========== */
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+    h2 {
+      font-family: 'BankGothicBold', sans-serif;
+      text-transform: uppercase;
+      font-size: 24px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    /* ========== 网格布局 ========== */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+
+    /* 项目卡片 */
+    .project-item {
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+    /* 图片容器 */
+    .img-box {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #222;
+      overflow: hidden;
+    }
+    /* 默认灰度、亮度降低 */
+    .img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(30%) brightness(80%);
+      transition: filter 0.3s ease;
+    }
+    .project-item:hover .img-box img {
+      filter: none; /* 悬浮时恢复原图 */
+    }
+
+    .project-info {
+      margin-top: 10px;
+    }
+    .project-title {
+      font-family: 'BankGothicBold', sans-serif;
+      font-size: 16px;
+      text-transform: uppercase;
+      margin: 0;
+      margin-bottom: 5px;
+    }
+    .project-meta {
+      font-size: 14px;
+      color: #AAA;
+      margin: 0;
+    }
+
+    /* 响应式简易处理 */
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .submenu {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .search-box {
+        margin-left: 0;
+        margin-top: 10px;
+      }
+    }
+/* 禁止所有文字选中 */
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* 禁止图片拖拽、右键保存、点击等 */
+img {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- 顶部导航 -->
+  <header>
+    <div class="logo">Para Studio</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="project.html">Projects</a></li>
+        <li><a href="BIM.html">BIM</a></li>
+        <li><a href="objects.html">Objects</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- 分类与搜索 -->
+  <div class="filter-bar">
+    <div class="submenu">
+      <span>Categories:</span>
+      <button class="category-btn active" data-category="all">All</button>
+      <button class="category-btn" data-category="architecture">Architecture</button>
+      <button class="category-btn" data-category="urban">Urban Design</button>
+      <button class="category-btn" data-category="interior">Interior</button>
+
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search Projects..." />
+      </div>
+    </div>
+
+    <div class="sub-submenu" id="architectureSubmenu">
+      <button class="subcategory-btn active" data-subcategory="all">All</button>
+      <button class="subcategory-btn" data-subcategory="residential">Residential</button>
+      <button class="subcategory-btn" data-subcategory="commercial">Commercial</button>
+      <button class="subcategory-btn" data-subcategory="cultural">Cultural</button>
+    </div>
+
+    <div class="sub-submenu" id="urbanSubmenu">
+      <button class="subcategory-btn active" data-subcategory="all">All</button>
+      <button class="subcategory-btn" data-subcategory="masterplan">Masterplan</button>
+      <button class="subcategory-btn" data-subcategory="city-renewal">City-Renewal</button>
+    </div>
+
+    <div class="sub-submenu" id="interiorSubmenu">
+      <button class="subcategory-btn active" data-subcategory="all">All</button>
+      <button class="subcategory-btn" data-subcategory="hotel">Hotel</button>
+      <button class="subcategory-btn" data-subcategory="office">Office</button>
+    </div>
+  </div>
+
+  <!-- 主内容：10 个项目列表，与主页对应 -->
+  <div class="container">
+    <h2>Our Projects</h2>
+<div id="interiorNotice" style="display:none; text-align:center; margin:250px auto; line-height:1.8;">
+  <p>Les projets d’intérieur sont en cours de composition.</p>
+  <p>Interior projects are under composition.</p>
+  <p>室内项目的呈现正在编排中，敬请期待。</p>
+</div>
+
+    <div class="grid" id="projectGrid">
+
+      <!-- 1) Parcelle n°33, Route Xihainan, District de Liwan, Canton -->
+<div class="project-item"
+     data-category="urban"
+     data-subcategory="city-renewal"
+     data-keywords="parcelle n°33 route xihainan district de liwan canton urban city-renewal 2023 canton">
+  <a href="parcelle-33-route-xihainan-liwan.html" style="text-decoration: none; color: inherit;">
+    <div class="img-box">
+      <img src="images/parcelle-33-route-xihainan-liwan-canton07.png"
+           alt="Parcelle n°33, Route Xihainan, District de Liwan, Canton">
+    </div>
+    <div class="project-info">
+      <p class="project-title">PARCELLE N°33, ROUTE XIHAINAN, DISTRICT DE LIWAN, CANTON</p>
+      <p class="project-meta">Canton, Chine – 2023 (Concept) </p>
+    </div>
+  </a>
+</div>
+
+<!-- 2) Pôle Robotique -->
+<div class="project-item"
+     data-category="architecture"
+     data-subcategory="cultural"
+     data-keywords="robotique innovation centre architecture cultural 2023 yancheng chine">
+  <a href="pole-innovation-robotique.html" style="text-decoration: none; color: inherit;">
+    <div class="img-box">
+      <img src="images/pole-innovation-robotique06.jpg" alt="Pôle Robotique">
+    </div>
+    <div class="project-info">
+      <p class="project-title">PÔLE D’INNOVATION COLLABORATIVE EN ROBOTIQUE</p>
+      <p class="project-meta"> Yancheng, Chine - 2023-2024 (Réalisé）</p>
+    </div>
+  </a>
+</div>
+
+      <!-- 3) Centre Communautaire Sanwa -->
+<div class="project-item"
+     data-category="architecture"
+     data-subcategory="public"
+     data-keywords="centre communautaire sanwa tinghu yancheng architecture public 2024 chine">
+  <a href="centre-communautaire-sanwa-tinghu.html" style="text-decoration: none; color: inherit;">
+    <div class="img-box">
+      <img src="images/centre-communautaire-sanwa-tinghu-yancheng21.png" alt="Centre Communautaire Sanwa">
+    </div>
+    <div class="project-info">
+      <p class="project-title">CENTRE COMMUNAUTAIRE DE SANWA, TINGHU</p>
+      <p class="project-meta">Yancheng, Chine - 2023 (En développement) </p>
+    </div>
+  </a>
+</div>
+
+<!-- 4) Proposition Conceptuelle d'Hôtel de Charme – Vieille Ville de Zhuxi, Yancheng -->
+<div class="project-item"
+     data-category="architecture"
+     data-subcategory="residential"
+     data-keywords="proposition conceptuelle dhotel de charme vieille ville de zhuxi yancheng hotel boutique concept 2023">
+  <a href="hotel-charme-zhuxi-yancheng.html" style="text-decoration: none; color: inherit;">
+    <div class="img-box">
+      <img src="images/hotel-charme-zhuxi-yancheng5.png"
+           alt="PROPOSITION CONCEPTUELLE D'HÔTEL DE CHARME – VIEILLE VILLE DE ZHUXI, YANCHENG">
+    </div>
+    <div class="project-info">
+      <p class="project-title">PROPOSITION CONCEPTUELLE D'HÔTEL DE CHARME – VIEILLE VILLE DE ZHUXI, YANCHENG</p>
+      <p class="project-meta">Yancheng, Chine – 2023 (Concept) </p>
+    </div>
+  </a>
+</div>
+
+<!-- 5) Concept urbain et réglementaire du parc industriel robotique rivière XiFu à Yancheng -->
+<div class="project-item"
+     data-category="urban"
+     data-subcategory="masterplan"
+     data-keywords="concept urbain parc robotique rivière xifu yancheng 2024">
+  <a href="concept-parc-robotique-xifu-yancheng.html"
+     style="text-decoration: none; color: inherit;">
+    <div class="img-box">
+      <img src="images/concept-parc-robotique-xifu-yancheng7.png"
+           alt="Concept urbain et réglementaire du parc robotique rivière XiFu à Yancheng">
+    </div>
+    <div class="project-info">
+      <p class="project-title">CONCEPT URBAIN ET RÉGLEMENTAIRE DU PARC INDUSTRIEL ROBOTIQUE RIVIÈRE XIFU À YANCHENG</p>
+      <p class="project-meta">Yancheng, Chine – 2024 (En cours de construction) </p>
+    </div>
+  </a>
+</div>
+
+      <!-- 6) LES BÂTIMENTS EMBLÉMATIQUES DE QUZHOU -->
+      <div class="project-item"
+     data-category="architecture"
+     data-subcategory="commercial"
+     data-keywords="quzhou chine 2023 architecture concours emblematiques">
+  <a href="batiments-emblematiques-quzhou.html" style="text-decoration: none; color: inherit;">
+    <div class="img-box">
+      <!-- 替换为你对应的图片，如 images/quzhou.png -->
+      <img src="images/concours-batiments-emblematiques-quzhou03.jpg" alt="Les Bâtiments Emblématiques de Quzhou">
+    </div>
+    <div class="project-info">
+      <!-- 大标题改为法文项目名称 -->
+      <p class="project-title">CONCOURS INTERNATIONAL DE CONCEPTION POUR LES BÂTIMENTS EMBLÉMATIQUES DE QUZHOU</p>
+      <!-- 年份 & 地点 -->
+      <p class="project-meta">Quzhou, Chine - 2023 (Concept) </p>
+    </div>
+  </a>
+</div>
+
+<!-- 7) SITE RÉVOLUTIONNAIRE DE JIANGKOU -->
+<div class="project-item"
+           data-category="architecture"
+           data-subcategory="cultural"
+           data-keywords="site revolutionnaire de jiangkou hexi red army shaaxi liuba">
+        <a href="site-revolutionnaire-jiangkou-hexi.html" style="text-decoration: none; color: inherit;">
+          <div class="img-box">
+            <!-- 用你指定的缩略图 -->
+            <img src="images/site-revolutionnaire-jiangkou-hexi01.jpg" alt="Site Révolutionnaire de Jiangkou, Hexi">
+          </div>
+          <div class="project-info">
+            <p class="project-title">SITE RÉVOLUTIONNAIRE DE JIANGKOU, HEXI</p>
+            <p class="project-meta">Liuba, Shaanxi, Chine - 2022 (Concept) </p>
+          </div>
+        </a>
+      </div>
+
+
+<!-- 8) ICBC Chengxin Yiwu -->
+<div class="project-item"
+     data-category="architecture"
+     data-subcategory="commercial"
+     data-keywords="icbc yiwu chengxin bank architecture commercial 2025 chine">
+  <a href="icbc-chengxin-yiwu.html" style="text-decoration: none; color: inherit;">
+    <div class="img-box">
+      <img src="images/proposition-conceptuelle-icbc-chengxin-yiwu05.png" alt="ICBC Yiwu">
+    </div>
+    <div class="project-info">
+      <p class="project-title">PROPOSITION CONCEPTUELLE – ICBC, AV. CHENGXIN, YIWU</p>
+      <p class="project-meta">Yiwu, Chine - 2024 (Concept) </p>
+    </div>
+  </a>
+</div>
+
+<!-- 9) Projet E-Commerce Transfrontalier de Yannan (Réhabilitation 2023) -->
+      <div class="project-item"
+           data-category="architecture"
+           data-subcategory="commercial"
+           data-keywords="e-commerce transfrontalier yannan architecture commercial 2023 yancheng">
+        <a href="ecommerce-transfrontalier-yannan.html" style="text-decoration: none; color: inherit;">
+          <div class="img-box">
+            <img src="images/projet-ecommerce-transfrontalier-yannan17.png" alt="Projet E-Commerce Transfrontalier de Yannan">
+          </div>
+          <div class="project-info">
+            <p class="project-title">PROJET E-COMMERCE TRANSFRONTALIER DE YANNAN</p>
+            <p class="project-meta">Yancheng, Chine – 2023 (En cours de construction) </p>
+          </div>
+        </a>
+      </div>
+
+
+      <!-- 10) LA TOUR DE L'EMBRESSE -->
+      <div class="project-item"
+           data-category="architecture"
+           data-subcategory="tower"
+           data-keywords="la tour de l'embrasse detroit concept skyscraper love tower future">
+        <a href="la-tour-de-lembresse.html" style="text-decoration: none; color: inherit;">
+          <div class="img-box">
+            <img src="images/la-tour-de-lembresse00.png" alt="LA TOUR DE L'EMBRESSE">
+          </div>
+          <div class="project-info">
+            <p class="project-title">LA TOUR DE L'EMBRESSE</p>
+            <p class="project-meta">Detroit，États-Unis - 2021 (Concept) </p>
+          </div>
+        </a>
+      </div>
+
+
+  <!-- JS：搜索与分类过滤逻辑 (保持原样) -->
+  <script>
+    const categoryBtns = document.querySelectorAll('.category-btn');
+    const subSubmenus = document.querySelectorAll('.sub-submenu');
+    const subcategoryBtns = document.querySelectorAll('.subcategory-btn');
+    const searchInput = document.getElementById('searchInput');
+    const projectGrid = document.getElementById('projectGrid');
+    const projectItems = projectGrid.querySelectorAll('.project-item');
+
+    let currentCategory = 'all';     // 当前激活的主分类
+    let currentSubcategory = 'all';  // 当前激活的二级分类
+    let searchKeyword = '';          // 搜索关键词
+
+// 切换主分类
+categoryBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    // 1) 切换按钮状态
+    categoryBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCategory = btn.getAttribute('data-category');
+    currentSubcategory = 'all';
+
+    // 2) 切换二级菜单
+    showSubSubmenu(currentCategory);
+    resetSubcategoryActive(currentCategory);
+
+    // 3) 显示／隐藏室内提示
+    const interiorNotice = document.getElementById('interiorNotice');
+    if (interiorNotice) {
+      interiorNotice.style.display = (currentCategory === 'interior') ? 'block' : 'none';
+    }
+
+    // 4) 再运行一次过滤
+    filterProjects();
+  });
+});
+
+    function showSubSubmenu(category) {
+      subSubmenus.forEach(menu => menu.classList.remove('active'));
+      if (category === 'architecture') {
+        document.getElementById('architectureSubmenu').classList.add('active');
+      } else if (category === 'urban') {
+        document.getElementById('urbanSubmenu').classList.add('active');
+      } else if (category === 'interior') {
+        document.getElementById('interiorSubmenu').classList.add('active');
+      }
+    }
+
+    function resetSubcategoryActive(category) {
+      subcategoryBtns.forEach(b => b.classList.remove('active'));
+      if (category === 'architecture') {
+        document.querySelector('#architectureSubmenu button[data-subcategory="all"]').classList.add('active');
+      } else if (category === 'urban') {
+        document.querySelector('#urbanSubmenu button[data-subcategory="all"]').classList.add('active');
+      } else if (category === 'interior') {
+        document.querySelector('#interiorSubmenu button[data-subcategory="all"]').classList.add('active');
+      }
+    }
+
+    // 切换二级分类
+    subcategoryBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const parentMenu = btn.parentNode;
+        parentMenu.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        currentSubcategory = btn.getAttribute('data-subcategory');
+        filterProjects();
+      });
+    });
+
+    // 搜索框输入
+    searchInput.addEventListener('input', () => {
+      searchKeyword = searchInput.value.toLowerCase().trim();
+      filterProjects();
+    });
+
+    // 过滤函数
+    function filterProjects() {
+      projectItems.forEach(item => {
+        const itemCategory = item.getAttribute('data-category');
+        const itemSubcategory = item.getAttribute('data-subcategory');
+        const itemKeywords = item.getAttribute('data-keywords').toLowerCase();
+
+        let categoryMatch = (currentCategory === 'all' || itemCategory === currentCategory);
+        let subcategoryMatch = true;
+        if (currentCategory !== 'all') {
+          subcategoryMatch = (currentSubcategory === 'all' || itemSubcategory === currentSubcategory);
+        }
+        let searchMatch = (searchKeyword === '' || itemKeywords.includes(searchKeyword));
+
+        if (categoryMatch && subcategoryMatch && searchMatch) {
+          item.style.display = '';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    // 页面加载完默认展示全部
+    window.addEventListener('DOMContentLoaded', () => {
+      filterProjects();
+    });
+  </script>
+<script>
+// 禁止右键菜单
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+// 禁止选中文本
+document.addEventListener('selectstart', e => e.preventDefault());
+
+// 禁止复制
+document.addEventListener('copy', e => e.preventDefault());
+
+// 禁止拖拽图片
+document.addEventListener('dragstart', e => e.preventDefault());
+
+// 禁止 Ctrl+S / Cmd+S 保存页面
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+    e.preventDefault();
+  }
+});
+
+// 禁止 F12 打开开发者工具
+document.addEventListener('keydown', e => {
+  if (e.key === 'F12') {
+    e.preventDefault();
+  }
+});
+</script>
+
+</body>
+</html>

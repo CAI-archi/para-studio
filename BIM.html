@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Projects - Para Studio</title>
+  <style>
+    /* ========== 字体设置 ========== */
+    @font-face {
+      font-family: 'BankGothicLight';
+      src: url('fonts/bgothl.ttf') format('truetype');
+      font-weight: 300;
+    }
+    @font-face {
+      font-family: 'BankGothicBold';
+      src: url('fonts/bgothm.ttf') format('truetype');
+      font-weight: 700;
+    }
+
+    body {
+      background: #000;
+      color: #FFF;
+      margin: 0;
+      padding: 0;
+      font-family: 'BankGothicLight', sans-serif;
+    }
+
+    /* ========== 顶部导航（保持原样） ========== */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #444; /* 顶部那条线 */
+    }
+    .logo {
+      font-size: 16px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+    nav ul li {
+      margin: 0 10px;
+    }
+    nav ul li a {
+      color: #FFF;
+      text-decoration: none;
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+
+    /* ========== 分类与搜索区域 ========== */
+    .filter-bar {
+      padding: 10px 20px;
+    }
+    .submenu {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap; /* 如果按钮过多，自动换行 */
+      margin-bottom: 10px;
+    }
+    .submenu span {
+      margin-right: 10px;
+      font-family: 'BankGothicBold', sans-serif;
+    }
+    .category-btn {
+      background: none;
+      border: none;
+      color: #AAA;
+      font-size: 14px;
+      margin-right: 15px;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-family: 'BankGothicLight', sans-serif;
+    }
+    .category-btn.active {
+      color: #FFF;
+      font-family: 'BankGothicBold', sans-serif;
+    }
+
+    .search-box {
+      margin-left: auto; /* 搜索框靠右 */
+    }
+    .search-box input {
+      background: #111;
+      border: 1px solid #444;
+      color: #FFF;
+      padding: 5px 10px;
+      font-size: 14px;
+      font-family: 'BankGothicLight', sans-serif;
+    }
+    .search-box input::placeholder {
+      color: #666;
+    }
+
+    /* 二级分类菜单 */
+    .sub-submenu {
+      display: none; /* 默认隐藏 */
+      margin-bottom: 10px;
+      padding-left: 20px; /* 让它与主分类略有层级感 */
+    }
+    .sub-submenu.active {
+      display: flex;
+    }
+    .subcategory-btn {
+      background: none;
+      border: none;
+      color: #AAA;
+      font-size: 14px;
+      margin-right: 15px;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-family: 'BankGothicLight', sans-serif;
+    }
+    .subcategory-btn.active {
+      color: #FFF;
+      font-family: 'BankGothicBold', sans-serif;
+    }
+
+    /* ========== 主内容区 ========== */
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+    h2 {
+      font-family: 'BankGothicBold', sans-serif;
+      text-transform: uppercase;
+      font-size: 24px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    /* ========== 网格布局 ========== */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+
+    /* 项目卡片 */
+    .project-item {
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+    /* 图片容器 */
+    .img-box {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #222;
+      overflow: hidden;
+    }
+    /* 默认灰度、亮度降低 */
+    .img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(30%) brightness(80%);
+      transition: filter 0.3s ease;
+    }
+    .project-item:hover .img-box img {
+      filter: none; /* 悬浮时恢复原图 */
+    }
+
+    .project-info {
+      margin-top: 10px;
+    }
+    .project-title {
+      font-family: 'BankGothicBold', sans-serif;
+      font-size: 16px;
+      text-transform: uppercase;
+      margin: 0;
+      margin-bottom: 5px;
+    }
+    .project-meta {
+      font-size: 14px;
+      color: #AAA;
+      margin: 0;
+    }
+
+    /* 响应式简易处理 */
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .submenu {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .search-box {
+        margin-left: 0;
+        margin-top: 10px;
+      }
+    }
+/* 禁止所有文字选中 */
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* 禁止图片拖拽、右键保存、点击等 */
+img {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- 顶部导航 -->
+  <header>
+    <div class="logo">Para Studio</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="project.html">Projects</a></li>
+        <li><a href="BIM.html">BIM</a></li>
+        <li><a href="objects.html">Objects</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- 分类与搜索 -->
+  <div class="filter-bar">
+    <div class="submenu">
+      <span>Categories:</span>
+      <button class="category-btn active" data-category="all">All</button>
+      <button class="category-btn" data-category="architecture">Architecture</button>
+      <button class="category-btn" data-category="interior">Interior</button>
+
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search Projects..." />
+      </div>
+    </div>
+
+    <div class="sub-submenu" id="architectureSubmenu">
+      <button class="subcategory-btn active" data-subcategory="all">All</button>
+      <button class="subcategory-btn" data-subcategory="residential">Residential</button>
+      <button class="subcategory-btn" data-subcategory="commercial">Commercial</button>
+      <button class="subcategory-btn" data-subcategory="cultural">Cultural</button>
+    </div>
+
+    <div class="sub-submenu" id="urbanSubmenu">
+      <button class="subcategory-btn active" data-subcategory="all">All</button>
+      <button class="subcategory-btn" data-subcategory="masterplan">Masterplan</button>
+      <button class="subcategory-btn" data-subcategory="city-renewal">City-Renewal</button>
+    </div>
+
+    <div class="sub-submenu" id="interiorSubmenu">
+      <button class="subcategory-btn active" data-subcategory="all">All</button>
+      <button class="subcategory-btn" data-subcategory="hotel">Hotel</button>
+      <button class="subcategory-btn" data-subcategory="office">Office</button>
+    </div>
+  </div>
+
+  <!-- 主内容：10 个项目列表，与主页对应 -->
+  <div class="container">
+    <h2>BIM COLLABORATION</h2>
+<div id="interiorNotice" style="display:none; text-align:center; margin:250px auto; line-height:1.8;">
+  <p>Les projets d’intérieur sont en cours de composition.</p>
+  <p>Interior projects are under composition.</p>
+  <p>室内项目的呈现正在编排中，敬请期待。</p>
+</div>
+
+    <div class="grid" id="projectGrid">
+
+      <!-- 1) MARSEILLE – DATA CENTRE -->
+<div class="project-item"
+     data-category="architecture"
+     data-subcategory="commercial"
+     data-keywords="marseille data centre datacenter bim mission collaboration dk-architectes lod 200 400 equivalent riba 2 4 2018 2020 france">
+  <a href="marseille-data-centre.html" style="text-decoration: none; color: inherit;">
+    <div class="img-box">
+      <img src="images/marseille-data-centre-02.jpg"
+           alt="Marseille – Data Centre">
+    </div>
+    <div class="project-info">
+      <p class="project-title">MARSEILLE – DATA CENTRE</p>
+      <p class="project-meta">
+  Marseille, France – 2018.09.08–2020<br>
+  En collaboration avec DK-Architectes<br>
+  LOD 200–400 (équivalent RIBA 2–4)
+</p>
+    </div>
+  </a>
+</div>
+
+<!-- 2) PARIS 8 DATA CENTRE -->
+<div class="project-item"
+     data-category="architecture"
+     data-subcategory="commercial"
+     data-keywords="paris 8 data centre datacenter bim mission collaboration dk-architectes lod 200 400 equivalent riba 2 4 2019 2021 france">
+  <a href="paris-8-data-centre.html" style="text-decoration: none; color: inherit;">
+    <div class="img-box">
+      <img src="images/paris-8-data-centre-02.jpg" alt="Paris 8 Data Centre">
+    </div>
+    <div class="project-info">
+      <p class="project-title">PARIS 8 DATA CENTRE</p>
+      <p class="project-meta">
+  Paris, France – 2019.03.04–2021<br>
+  En collaboration avec DK-Architectes<br>
+  LOD 200–400 (équivalent RIBA 2–4)
+</p>
+    </div>
+  </a>
+</div>
+
+  <!-- JS：搜索与分类过滤逻辑 (保持原样) -->
+  <script>
+    const categoryBtns = document.querySelectorAll('.category-btn');
+    const subSubmenus = document.querySelectorAll('.sub-submenu');
+    const subcategoryBtns = document.querySelectorAll('.subcategory-btn');
+    const searchInput = document.getElementById('searchInput');
+    const projectGrid = document.getElementById('projectGrid');
+    const projectItems = projectGrid.querySelectorAll('.project-item');
+
+    let currentCategory = 'all';     // 当前激活的主分类
+    let currentSubcategory = 'all';  // 当前激活的二级分类
+    let searchKeyword = '';          // 搜索关键词
+
+// 切换主分类
+categoryBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    // 1) 切换按钮状态
+    categoryBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCategory = btn.getAttribute('data-category');
+    currentSubcategory = 'all';
+
+    // 2) 切换二级菜单
+    showSubSubmenu(currentCategory);
+    resetSubcategoryActive(currentCategory);
+
+    // 3) 显示／隐藏室内提示
+    const interiorNotice = document.getElementById('interiorNotice');
+    if (interiorNotice) {
+      interiorNotice.style.display = (currentCategory === 'interior') ? 'block' : 'none';
+    }
+
+    // 4) 再运行一次过滤
+    filterProjects();
+  });
+});
+
+    function showSubSubmenu(category) {
+      subSubmenus.forEach(menu => menu.classList.remove('active'));
+      if (category === 'architecture') {
+        document.getElementById('architectureSubmenu').classList.add('active');
+      } else if (category === 'urban') {
+        document.getElementById('urbanSubmenu').classList.add('active');
+      } else if (category === 'interior') {
+        document.getElementById('interiorSubmenu').classList.add('active');
+      }
+    }
+
+    function resetSubcategoryActive(category) {
+      subcategoryBtns.forEach(b => b.classList.remove('active'));
+      if (category === 'architecture') {
+        document.querySelector('#architectureSubmenu button[data-subcategory="all"]').classList.add('active');
+      } else if (category === 'urban') {
+        document.querySelector('#urbanSubmenu button[data-subcategory="all"]').classList.add('active');
+      } else if (category === 'interior') {
+        document.querySelector('#interiorSubmenu button[data-subcategory="all"]').classList.add('active');
+      }
+    }
+
+    // 切换二级分类
+    subcategoryBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const parentMenu = btn.parentNode;
+        parentMenu.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        currentSubcategory = btn.getAttribute('data-subcategory');
+        filterProjects();
+      });
+    });
+
+    // 搜索框输入
+    searchInput.addEventListener('input', () => {
+      searchKeyword = searchInput.value.toLowerCase().trim();
+      filterProjects();
+    });
+
+    // 过滤函数
+    function filterProjects() {
+      projectItems.forEach(item => {
+        const itemCategory = item.getAttribute('data-category');
+        const itemSubcategory = item.getAttribute('data-subcategory');
+        const itemKeywords = item.getAttribute('data-keywords').toLowerCase();
+
+        let categoryMatch = (currentCategory === 'all' || itemCategory === currentCategory);
+        let subcategoryMatch = true;
+        if (currentCategory !== 'all') {
+          subcategoryMatch = (currentSubcategory === 'all' || itemSubcategory === currentSubcategory);
+        }
+        let searchMatch = (searchKeyword === '' || itemKeywords.includes(searchKeyword));
+
+        if (categoryMatch && subcategoryMatch && searchMatch) {
+          item.style.display = '';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    // 页面加载完默认展示全部
+    window.addEventListener('DOMContentLoaded', () => {
+      filterProjects();
+    });
+  </script>
+<script>
+// 禁止右键菜单
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+// 禁止选中文本
+document.addEventListener('selectstart', e => e.preventDefault());
+
+// 禁止复制
+document.addEventListener('copy', e => e.preventDefault());
+
+// 禁止拖拽图片
+document.addEventListener('dragstart', e => e.preventDefault());
+
+// 禁止 Ctrl+S / Cmd+S 保存页面
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+    e.preventDefault();
+  }
+});
+
+// 禁止 F12 打开开发者工具
+document.addEventListener('keydown', e => {
+  if (e.key === 'F12') {
+    e.preventDefault();
+  }
+});
+</script>
+
+</body>
+</html>

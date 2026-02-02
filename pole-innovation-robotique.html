@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PÔLE D’INNOVATION COLLABORATIVE EN ROBOTIQUE - Para Studio</title>
+  <style>
+    @font-face {
+      font-family: 'BankGothicLight';
+      src: url('fonts/bgothl.ttf') format('truetype');
+      font-weight: 300;
+    }
+    @font-face {
+      font-family: 'BankGothicBold';
+      src: url('fonts/bgothm.ttf') format('truetype');
+      font-weight: 700;
+    }
+
+    body {
+      background: #000;
+      color: #FFF;
+      margin: 0;
+      padding: 0;
+      font-family: 'BankGothicLight', sans-serif;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    /* Header 顶部导航固定 */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      box-sizing: border-box;
+    }
+
+    .logo {
+      font-size: 16px;
+      font-family: 'BankGothicBold', sans-serif;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+
+    nav ul li {
+      margin: 0 10px;
+    }
+
+    nav ul li a {
+      color: #FFF;
+      text-decoration: none;
+      font-size: 14px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #888;
+    }
+
+    /* 轮播图全屏铺满 */
+    .slider-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .slide.active {
+      display: block;
+      animation: fade 1s;
+    }
+
+    @keyframes fade {
+      from {opacity: 0.5}
+      to {opacity: 1}
+    }
+
+    .slider-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: #FFF;
+      border: none;
+      font-size: 36px;
+      font-family: 'BankGothicBold', sans-serif;
+      cursor: pointer;
+      padding: 10px 15px;
+      z-index: 10;
+      transition: background 0.3s;
+    }
+
+    .slider-button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .prev {
+      left: 20px;
+    }
+
+    .next {
+      right: 20px;
+    }
+
+    /* 内容容器 */
+    .container {
+      max-width: 1200px;
+      margin: 100px auto 60px;
+      padding: 0 20px;
+      opacity: 0;
+      transform: translateY(50px) scale(1.02);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+      text-align: center;
+    }
+
+    .container.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .info {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      font-size: 14px;
+      color: #AAA;
+      margin-top: 40px;
+      opacity: 0;
+      transform: translateY(50px) scale(1.02);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .info.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 10px 20px;
+      }
+
+      .slider-button {
+        font-size: 24px;
+        padding: 8px;
+      }
+
+      .info {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .image-slider img:hover {
+      transform: scale(1.02);
+    }
+    .slider-button.prev {
+      left: 20px;
+    }
+    .slider-button.next {
+      right: 20px;
+    }
+/* 禁止所有文字选中 */
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* 禁止图片拖拽、右键保存、点击等 */
+img {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Header 导航 -->
+  <header>
+    <div class="logo" onclick="window.location.href='index.html'">PARA STUDIO</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="project.html">Projects</a></li>
+        <li><a href="BIM.html">BIM</a></li>
+        <li><a href="objects.html">Objects</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+<!-- 轮播图 (第0屏) -->
+<div class="slider-container">
+  <div class="slide active" style="background-image: url('images/pole-innovation-robotique06.jpg');"></div>
+  <div class="slide" style="background-image: url('images/pole-innovation-robotique10.jpg');"></div>
+  <div class="slide" style="background-image: url('images/pole-innovation-robotique05.jpg');"></div>
+  <div class="slide" style="background-image: url('images/pole-innovation-robotique01.jpg');"></div>
+  <button class="slider-button prev" onclick="plusSlides(-1)">&#10094;</button>
+  <button class="slider-button next" onclick="plusSlides(1)">&#10095;</button>
+</div>
+
+  <!-- (第1屏) 项目简介 -->
+  <div class="container" id="section-1" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; text-align: left;">
+    <!-- 左侧文字 -->
+    <div style="flex: 1 1 60%; padding-right: 40px;">
+      <h1 style="font-family: 'BankGothicBold'; font-size: 48px; text-transform: uppercase; margin-bottom: 20px;">
+        PÔLE D’INNOVATION COLLABORATIVE EN ROBOTIQUE
+      </h1>
+      <h2 style="font-family: 'BankGothicLight'; font-size: 28px; text-transform: capitalize; color: #AAA; margin-bottom: 40px;">
+        Xifuhe, Yancheng, Jiangsu, Chine / 2023-2024
+      </h2>
+      <p style="color: #AAA; font-size: 16px; line-height: 1.3; margin-bottom: 20px; font-family: 'Arial';">
+        Le « Pôle d’Innovation Collaborative en Robotique » est situé dans le parc industriel de robots de Xifuhe, à Yancheng, dans la province du Jiangsu, en Chine. Avec une surface construite de 2 797 m² (dont 1 190 m² pour le rez-de-chaussée), ce projet construit réunit des fonctions d’exposition, de bureaux et d’échanges techniques. L’architecture s’inspire du langage formel de la robotique contemporaine, exprimant la dynamique, la structure et la précision par des volumes modulaires et des lignes fluides. Le bâtiment vise à devenir une vitrine technologique tout en répondant aux besoins fonctionnels d’un centre d’innovation industriel.
+      </p>
+    </div>
+    <!-- 右侧项目信息 -->
+<!-- 右侧项目信息 -->
+<div style="flex: 1 1 35%; color: #AAA; font-size: 14px; line-height: 1.8;">
+  <p><strong>Client</strong><br> Gouvernement de la ville de Yancheng</p>
+  <p><strong>Location</strong><br> Xifuhe, Yancheng, Jiangsu, Chine</p>
+  <p><strong>Building Surface</strong><br> 2 797 m² (SHON)</p>
+  <p><strong>Ground Floor Area</strong><br> 1 190 m²</p>
+  <p><strong>Programme</strong><br> Hall d’exposition, bureaux, espace de démonstration et de coopération industrielle</p>
+  <p><strong>Status</strong><br> Projet réalisé, 2023–2024</p>
+  </div>
+  </div>
+
+<!-- (第2屏) Intention de Conception（放大图 + 三栏对齐文字） -->
+<div class="container" id="section-2" style="
+  width: 100%;
+  height: 100vh; /* 如果需要铺满屏幕 */
+  margin: 150px auto; /* 给上下留空，滚动更自然 */
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+">
+  <img src="images/pole-innovation-robotique05.jpg"
+       alt="Full Width Image"
+       style="
+         width: 100%;
+         max-width: 1300px;
+         display: block;
+       ">
+</div>
+
+<!-- 第三屏 -->
+<div class="container" id="section-3" style="
+  width: 100%;
+  height: 100vh; /* 如果需要铺满屏幕 */
+  margin: 150px auto; /* 给上下留空，滚动更自然 */
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+">
+  <img src="images/pole-innovation-robotique03.jpg"
+       alt="Full Width Image"
+       style="
+         width: 100%;
+         max-width: 1300px;
+         display: block;
+       ">
+</div>
+
+<!-- 第四屏 -->
+<div class="container" id="section-4" style="
+  width: 100%;
+  height: 100vh; /* 如果需要铺满屏幕 */
+  margin: 120px auto; /* 给上下留空，滚动更自然 */
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+">
+  <img src="images/pole-innovation-robotique06.jpg"
+       alt="06大图"
+       style="
+         width: 150%;
+         max-width: 1800px; /* 和第三屏对齐 */
+         display: block;
+       ">
+</div>
+
+<!-- 第五屏 -->
+<div class="container" id="section-5" style="
+  margin: 120px auto;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+">
+  <img src="images/pole-innovation-robotique07.png"
+       alt="06大图"
+       style="
+         width: 100%;
+         max-width: 1500px; /* 和第三屏对齐 */
+         display: block;
+       ">
+</div>
+
+<!-- 第六屏 -->
+<div class="container" id="section-6" style="
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1500px;
+  margin: 120px auto;
+  padding: 0 20px;
+  text-align: center;
+">
+
+  <img src="images/pole-innovation-robotique08.png"
+       alt="Image 07"
+       style="
+         width: 100%;
+         max-width: 1200px;
+         display: block;
+       ">
+</div>
+
+<!-- 第七屏 -->
+<div class="container" id="section-7" style="
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1500px;
+  margin: 120px auto;
+  padding: 0 20px;
+  text-align: center;
+">
+
+  <img src="images/pole-innovation-robotique09.jpg"
+       alt="Image 10"
+       style="
+         width: 100%;
+         max-width: 1200px;
+         display: block;
+       ">
+</div>
+
+<!-- 第八屏 -->
+<div class="container" id="section-8" style="
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1500px;
+  margin: 120px auto;
+  padding: 0 20px;
+  text-align: center;
+">
+
+  <img src="images/pole-innovation-robotique10.jpg"
+       alt="Image 10"
+       style="
+         width: 100%;
+         max-width: 1200px;
+         display: block;
+       ">
+</div>
+
+<!-- 第九屏 -->
+<div class="container" id="section-9" style="
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1500px;
+  margin: 120px auto;
+  padding: 0 20px;
+  text-align: center;
+">
+
+  <img src="images/pole-innovation-robotique01.jpg"
+       alt="Image 10"
+       style="
+         width: 100%;
+         max-width: 1200px;
+         display: block;
+       ">
+</div>
+
+<!-- 第十屏 -->
+<div class="container" id="section-10" style="
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1500px;
+  margin: 120px auto;
+  padding: 0 20px;
+  text-align: center;
+">
+
+  <img src="images/pole-innovation-robotique02.jpg"
+       alt="Image 10"
+       style="
+         width: 100%;
+         max-width: 1200px;
+         display: block;
+       ">
+</div>
+
+<script>
+  // 轮播图逻辑
+  let slideIndex = 0;
+  const slides = document.querySelectorAll('.slide');
+
+  function showSlide(index) {
+    slides.forEach((slide, i) => {
+      slide.classList.remove('active');
+      if (i === index) {
+        slide.classList.add('active');
+      }
+    });
+  }
+
+  function plusSlides(n) {
+    slideIndex += n;
+    if (slideIndex >= slides.length) slideIndex = 0;
+    if (slideIndex < 0) slideIndex = slides.length - 1;
+    showSlide(slideIndex);
+  }
+
+  // IntersectionObserver 动画 (只保留 section-1 和 section-3)
+  const options = { threshold: 0.2 };
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      } else {
+        entry.target.classList.remove('visible');
+      }
+    });
+  }, options);
+
+  observer.observe(document.getElementById('section-1'));
+  observer.observe(document.getElementById('section-2'));
+  observer.observe(document.getElementById('section-3'));
+  observer.observe(document.getElementById('section-4'));
+  observer.observe(document.getElementById('section-5'));
+  observer.observe(document.getElementById('section-6'));
+  observer.observe(document.getElementById('section-7'));
+  observer.observe(document.getElementById('section-8'));
+  observer.observe(document.getElementById('section-9'));
+  observer.observe(document.getElementById('section-10'));
+  
+</script>
+<script>
+// 禁止右键菜单
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+// 禁止选中文本
+document.addEventListener('selectstart', e => e.preventDefault());
+
+// 禁止复制
+document.addEventListener('copy', e => e.preventDefault());
+
+// 禁止拖拽图片
+document.addEventListener('dragstart', e => e.preventDefault());
+
+// 禁止 Ctrl+S / Cmd+S 保存页面
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+    e.preventDefault();
+  }
+});
+
+// 禁止 F12 打开开发者工具
+document.addEventListener('keydown', e => {
+  if (e.key === 'F12') {
+    e.preventDefault();
+  }
+});
+</script>
+
+</body>
+</html>
